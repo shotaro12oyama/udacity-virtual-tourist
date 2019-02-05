@@ -63,7 +63,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate  {
         if (sender as AnyObject).state == UIGestureRecognizer.State.ended {
             let tapPoint = (sender as AnyObject).location(in: view)
             let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-            TouchPinRecord.setTouchRecord(newRecord: center)
+            TouchPinRecord.setTouchRecord(newRecord: center, title: "TEST")
             // Here we create the annotation and set its coordiate, title, and subtitle properties
             // When the array is complete, we add the annotations to the map.
             self.mapView.addAnnotations(TouchPinRecord.annotaions)
