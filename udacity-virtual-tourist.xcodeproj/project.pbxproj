@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		E26F980922088EDA0086C046 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F980822088EDA0086C046 /* AppDelegate.swift */; };
-		E26F980B22088EDA0086C046 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F980A22088EDA0086C046 /* ViewController.swift */; };
 		E26F980E22088EDA0086C046 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E26F980C22088EDA0086C046 /* Main.storyboard */; };
 		E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */; };
 		E26F981322088EDB0086C046 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E26F981222088EDB0086C046 /* Assets.xcassets */; };
 		E26F981622088EDB0086C046 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E26F981422088EDB0086C046 /* LaunchScreen.storyboard */; };
 		E26F982122088EDB0086C046 /* udacity_virtual_touristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F982022088EDB0086C046 /* udacity_virtual_touristTests.swift */; };
 		E26F982C22088EDB0086C046 /* udacity_virtual_touristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F982B22088EDB0086C046 /* udacity_virtual_touristUITests.swift */; };
+		E26F983C220A0EE40086C046 /* InitialMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983B220A0EE40086C046 /* InitialMapViewController.swift */; };
+		E26F983E220A18DF0086C046 /* TouchPinRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983D220A18DE0086C046 /* TouchPinRecord.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,6 @@
 /* Begin PBXFileReference section */
 		E26F980522088EDA0086C046 /* udacity-virtual-tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "udacity-virtual-tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E26F980822088EDA0086C046 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		E26F980A22088EDA0086C046 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		E26F980D22088EDA0086C046 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E26F981022088EDA0086C046 /* udacity_virtual_tourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = udacity_virtual_tourist.xcdatamodel; sourceTree = "<group>"; };
 		E26F981222088EDB0086C046 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +49,8 @@
 		E26F982722088EDB0086C046 /* udacity-virtual-touristUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "udacity-virtual-touristUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E26F982B22088EDB0086C046 /* udacity_virtual_touristUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = udacity_virtual_touristUITests.swift; sourceTree = "<group>"; };
 		E26F982D22088EDB0086C046 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E26F983B220A0EE40086C046 /* InitialMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialMapViewController.swift; sourceTree = "<group>"; };
+		E26F983D220A18DE0086C046 /* TouchPinRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchPinRecord.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +102,13 @@
 			isa = PBXGroup;
 			children = (
 				E26F980822088EDA0086C046 /* AppDelegate.swift */,
-				E26F980A22088EDA0086C046 /* ViewController.swift */,
 				E26F980C22088EDA0086C046 /* Main.storyboard */,
 				E26F981222088EDB0086C046 /* Assets.xcassets */,
 				E26F981422088EDB0086C046 /* LaunchScreen.storyboard */,
 				E26F981722088EDB0086C046 /* Info.plist */,
 				E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */,
+				E26F983B220A0EE40086C046 /* InitialMapViewController.swift */,
+				E26F983D220A18DE0086C046 /* TouchPinRecord.swift */,
 			);
 			path = "udacity-virtual-tourist";
 			sourceTree = "<group>";
@@ -259,7 +262,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E26F980B22088EDA0086C046 /* ViewController.swift in Sources */,
+				E26F983E220A18DF0086C046 /* TouchPinRecord.swift in Sources */,
+				E26F983C220A0EE40086C046 /* InitialMapViewController.swift in Sources */,
 				E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */,
 				E26F980922088EDA0086C046 /* AppDelegate.swift in Sources */,
 			);
