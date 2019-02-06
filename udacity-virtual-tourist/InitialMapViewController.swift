@@ -9,16 +9,14 @@
 import UIKit
 import MapKit
 
-class InitialMapViewController: UIViewController,  MKMapViewDelegate  {
+class InitialMapViewController: UIViewController,  MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
 
-        // Here we create the annotation and set its coordiate, title, and subtitle properties
         
     }
 
@@ -47,21 +45,20 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate  {
     }
 
 
-    // This delegate method is implemented to respond to taps. It opens the system browser
-    // to the URL specified in the annotationViews subtitle property.
+    // This delegate method is implemented to respond to taps. 
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            let app = UIApplication.shared
-            if let toOpen = view.annotation?.subtitle! {
-                app.openURL(URL(string: toOpen)!)
-            }
+            let detailController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
+                 self.navigationController!.pushViewController(detailController, animated: true)
+            detailController.annotationSelected = view.annotation
+            
         }
     }
  
     
     @IBAction func mapViewDidTap(_ sender: Any) {
         if (sender as AnyObject).state == UIGestureRecognizer.State.ended {
-            let tapPoint = (sender as AnyObject).location(in: view)
+            let tapPoint = (sender as AnyObject).location(in: mapView)
             let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)
             TouchPinRecord.setTouchRecord(newRecord: center, title: "TEST")
             // Here we create the annotation and set its coordiate, title, and subtitle properties
