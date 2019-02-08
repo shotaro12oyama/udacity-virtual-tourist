@@ -19,11 +19,12 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     @IBOutlet weak var mapView: MKMapView!
     
     var annotationSelected: MKAnnotation?
-    
+    var dataController:DataController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+    
         //configuring flowLayout
         let space:CGFloat = 3.0
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
@@ -40,10 +41,9 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             self.mapView.addAnnotation(annotation)
         }
         
-        let pindata: photodata
+        let pindata: PinData
         
         FlickrClient.getPhotolist () { photoinfo , error in
-            print(photoinfo)
             FlickrClient.getPhotoDownloadInfo(photoInfo: photoinfo) { success, error in
                 if success {
                     self.photoAlbumCollectionView.reloadData()
@@ -108,7 +108,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     @IBAction func newCollectionButton (_ sender: Any) {
         FlickrClient.getPhotolist () { photoinfo , error in
-            print(photoinfo)
+            
         }
         self.photoAlbumCollectionView.reloadData()
     }
