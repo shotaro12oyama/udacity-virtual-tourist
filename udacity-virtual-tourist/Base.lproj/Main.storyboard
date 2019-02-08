@@ -101,17 +101,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="129" height="119"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="TEST" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rVQ-vl-N6e">
-                                                    <rect key="frame" x="43" y="49" width="41" height="21"/>
+                                                <imageView userInteractionEnabled="NO" tag="2" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="azw-WN-NJm">
+                                                    <rect key="frame" x="0.0" y="-9" width="148" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                </imageView>
                                             </subviews>
                                         </view>
                                         <connections>
-                                            <outlet property="testLabel" destination="rVQ-vl-N6e" id="cLC-U3-tkd"/>
+                                            <outlet property="photoImageView" destination="azw-WN-NJm" id="cka-D0-6wo"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -130,6 +127,9 @@
                                 <state key="normal" title="New Collection">
                                     <color key="titleColor" red="0.0" green="0.58980089430000004" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="newCollectionButton:" destination="MdK-T6-y6b" eventType="touchUpInside" id="eGE-lQ-xxu"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

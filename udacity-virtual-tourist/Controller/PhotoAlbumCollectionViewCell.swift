@@ -10,6 +10,5 @@ import UIKit
 
 class PhotoAlbumCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var testLabel: UILabel!
-    
+    @IBOutlet weak var photoImageView: UIImageView!
 }

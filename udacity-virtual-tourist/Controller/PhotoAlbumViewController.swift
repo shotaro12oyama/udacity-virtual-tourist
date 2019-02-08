@@ -8,6 +8,7 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate {
     
@@ -38,11 +39,23 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             self.mapView.setRegion(region, animated:true)
             self.mapView.addAnnotation(annotation)
         }
+        
+        let pindata: photodata
+        
+        FlickrClient.getPhotolist () { photoinfo , error in
+            print(photoinfo)
+            FlickrClient.getPhotoDownloadInfo(photoInfo: photoinfo) { success, error in
+                if success {
+                    self.photoAlbumCollectionView.reloadData()
+                }
+            }
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        photoAlbumCollectionView.reloadData()
+        self.photoAlbumCollectionView.reloadData()
     }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
@@ -70,12 +83,12 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
-        cell.backgroundColor = UIColor(red: CGFloat(drand48()),
-                                       green: CGFloat(drand48()),
-                                       blue: CGFloat(drand48()),
-                                       alpha: 1.0)
-        
-        cell.testLabel.text = String(indexPath.row + 1)
+        var photoInput = URL(string: FlickrClient.PhotoDownload.photoURL[indexPath.item]!)
+        DispatchQueue.main.async {
+            let data = try? Data(contentsOf: photoInput!)
+            cell.photoImageView.image = UIImage(data: data!)
+        }
+
         return cell
     }
     
@@ -89,7 +102,16 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return 10;
+        return FlickrClient.PhotoDownload.photoURL.count;
     }
-
+    
+    
+    @IBAction func newCollectionButton (_ sender: Any) {
+        FlickrClient.getPhotolist () { photoinfo , error in
+            print(photoinfo)
+        }
+        self.photoAlbumCollectionView.reloadData()
+    }
+    
+    
 }
