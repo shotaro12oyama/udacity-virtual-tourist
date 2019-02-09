@@ -8,15 +8,31 @@
 
 import UIKit
 import MapKit
+import CoreData
 
 class InitialMapViewController: UIViewController,  MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-   
+
+    var dataController: DataController!
+    
+    //var fetchedResultsController: NSFetchedResultsController<PinData>!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let fetchRequest: NSFetchRequest<PinData> = PinData.fetchRequest()
+        if let result = try? dataController.viewContext.fetch(fetchRequest) {
+            var annotations: [MKPointAnnotation] = []
+            for item in result {
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: item.lat, longitude: item.lon)
+                annotation.title = item.title
+                annotations.append(annotation)
+            }
+            self.mapView.addAnnotations(annotations)
+            
 
-
+        }
         
     }
 
@@ -51,6 +67,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
             let detailController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
                  self.navigationController!.pushViewController(detailController, animated: true)
             detailController.annotationSelected = view.annotation
+            detailController.dataController = dataController
             
         }
     }
@@ -60,9 +77,20 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
         if (sender as AnyObject).state == UIGestureRecognizer.State.ended {
             let tapPoint = (sender as AnyObject).location(in: mapView)
             let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-            TouchPinRecord.setTouchRecord(newRecord: center, title: "TEST")
-            // Here we create the annotation and set its coordiate, title, and subtitle properties
-            // When the array is complete, we add the annotations to the map.
+            TouchPinRecord.setTouchRecord(newRecord: center)
+            
+            let pinData = PinData(context: dataController.viewContext)
+            pinData.lat = center.latitude
+            pinData.lon = center.longitude
+
+            let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
+            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                guard let placemark = placemarks?.first, error == nil else { return }
+                pinData.title = "\(placemark.locality ?? "Unknown")" + ", " + "\(placemark.administrativeArea ?? "Unknown")"
+            }
+            
+            try? dataController.viewContext.save()
+
             self.mapView.addAnnotations(TouchPinRecord.annotaions)
         }
     }

@@ -119,6 +119,7 @@
 		8DB0A106220D339000691A07 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				E26F983D220A18DE0086C046 /* TouchPinRecord.swift */,
 				8DB0A103220C26A400691A07 /* FlickrResponse */,
 				8DB0A100220C0D0100691A07 /* FlickrClient */,
 				8DB0A107220D33A300691A07 /* DataController.swift */,
@@ -150,15 +151,14 @@
 		E26F980722088EDA0086C046 /* udacity-virtual-tourist */ = {
 			isa = PBXGroup;
 			children = (
+				E26F980822088EDA0086C046 /* AppDelegate.swift */,
 				8DB0A106220D339000691A07 /* Model */,
 				8DB0A0F1220C0AAE00691A07 /* Controller */,
-				E26F980822088EDA0086C046 /* AppDelegate.swift */,
 				E26F980C22088EDA0086C046 /* Main.storyboard */,
 				E26F981222088EDB0086C046 /* Assets.xcassets */,
 				E26F981422088EDB0086C046 /* LaunchScreen.storyboard */,
 				E26F981722088EDB0086C046 /* Info.plist */,
 				E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */,
-				E26F983D220A18DE0086C046 /* TouchPinRecord.swift */,
 			);
 			path = "udacity-virtual-tourist";
 			sourceTree = "<group>";

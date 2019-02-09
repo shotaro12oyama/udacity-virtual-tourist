@@ -26,7 +26,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
     
         //configuring flowLayout
-        let space:CGFloat = 3.0
+        let space:CGFloat = 1.5
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
