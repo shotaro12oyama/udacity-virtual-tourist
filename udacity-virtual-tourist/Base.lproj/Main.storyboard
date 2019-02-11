@@ -119,10 +119,15 @@
                                                     <rect key="frame" x="0.0" y="-9" width="148" height="128"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                 </imageView>
+                                                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="OMV-Nj-BEs">
+                                                    <rect key="frame" x="20" y="58" width="89" height="2"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </progressView>
                                             </subviews>
                                         </view>
                                         <connections>
                                             <outlet property="photoImageView" destination="azw-WN-NJm" id="cka-D0-6wo"/>
+                                            <outlet property="progressBar" destination="OMV-Nj-BEs" id="5Ic-oL-sjf"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>

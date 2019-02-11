@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate {
+class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, URLSessionDownloadDelegate {
     
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
@@ -20,6 +20,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     var annotationSelected: MKAnnotation?
     var dataController:DataController!
+    var progress: Float = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +41,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             self.mapView.setRegion(region, animated:true)
             self.mapView.addAnnotation(annotation)
         }
-        
-        let pindata: PinData
+    
         
         FlickrClient.getPhotolist () { photoinfo , error in
             FlickrClient.getPhotoDownloadInfo(photoInfo: photoinfo) { success, error in
@@ -84,14 +84,62 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
         var photoInput = URL(string: FlickrClient.PhotoDownload.photoURL[indexPath.item]!)
+        
+        //progressBar = UIProgressView(progressViewStyle: .default)
+        //progressBar.layer.position = CGPoint(x: self.view.center.x, y: self.view.frame.height / 4)
+        //self.view.addSubview(progressBar)
         DispatchQueue.main.async {
-            let data = try? Data(contentsOf: photoInput!)
-            cell.photoImageView.image = UIImage(data: data!)
+            //let data = try? Data(contentsOf: photoInput!)
+            
+            let sessionConfig = URLSessionConfiguration.background(withIdentifier: "myapp-background")
+            let session = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
+            let downloadTask = session.downloadTask(with: photoInput!)
+            downloadTask.resume()
+            
+            cell.photoImageView.image = UIImage(
+            
+            cell.progressBar = UIProgressView(progressViewStyle: .default)
+            cell.progressBar.setProgress(self.progress, animated: true)
+            
         }
 
         return cell
     }
     
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("didFinishDownloading")
+        do {
+            if let data = NSData(contentsOf: location) {
+                let fileExtension = location.pathExtension
+                let filePath = getSaveDirectory() + getIdFromDateTime() + "." + fileExtension
+                print(filePath)
+                
+                
+                
+                try data.write(toFile: filePath, options: .atomic)
+                
+            }
+            
+        } catch let error as NSError {
+            
+            print("download error: \(error)")
+            
+        }
+        
+    }
+
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+        
+        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        print(String(format: "%.2f", progress * 100) + "%")
+        
+        //DispatchQueue.main.async(execute: {
+          //  self.progressBar.setProgress(progress, animated: true)
+        //})
+    }
     
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
