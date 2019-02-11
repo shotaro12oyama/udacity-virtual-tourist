@@ -13,27 +13,60 @@ import CoreData
 class InitialMapViewController: UIViewController,  MKMapViewDelegate {
 
     @IBOutlet weak var mapView: MKMapView!
-
-    var dataController: DataController!
+    @IBOutlet weak var deleteNotifyLabel: UILabel!
     
-    //var fetchedResultsController: NSFetchedResultsController<PinData>!
+    var dataController: DataController!
+    var editState: Bool = true
+    
+    var fetchedResultsController: NSFetchedResultsController<PinData>!
+    
+    var annotations: [MKPointAnnotation] = []
+    var pin: [NSManagedObjectID:MKPointAnnotation] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(edit))
+        deleteNotifyLabel.isHidden = true
+        deleteNotifyLabel.isEnabled = false
+        editState = true
+        
         let fetchRequest: NSFetchRequest<PinData> = PinData.fetchRequest()
         if let result = try? dataController.viewContext.fetch(fetchRequest) {
-            var annotations: [MKPointAnnotation] = []
+            
             for item in result {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude: item.lat, longitude: item.lon)
                 annotation.title = item.title
                 annotations.append(annotation)
+                pin.updateValue(annotation, forKey: item.objectID)
+
             }
             self.mapView.addAnnotations(annotations)
-            
 
         }
         
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.mapView.addAnnotations(annotations)
+    }
+    
+    @objc func edit() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done", style: .plain, target: self, action: #selector(done))
+        deleteNotifyLabel.isEnabled = true
+        deleteNotifyLabel.isHidden = false
+        editState = false
+        
+        
+    }
+
+    @objc func done() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(edit))
+        deleteNotifyLabel.isHidden = true
+        deleteNotifyLabel.isEnabled = false
+        editState = true
     }
 
     // MARK: - MKMapViewDelegate
@@ -52,6 +85,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
             pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
             pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+   
         }
         else {
             pinView!.annotation = annotation
@@ -64,34 +98,52 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
     // This delegate method is implemented to respond to taps. 
     func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         if control == view.rightCalloutAccessoryView {
-            let detailController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
-                 self.navigationController!.pushViewController(detailController, animated: true)
-            detailController.annotationSelected = view.annotation
-            detailController.dataController = dataController
+            if editState {
+                let detailController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
+                     self.navigationController!.pushViewController(detailController, animated: true)
+                detailController.annotationSelected = view.annotation
+                detailController.dataController = dataController
+            } else {
+                let pinObjectID = pin.filter{$0.value == view.annotation as! MKPointAnnotation}.keys.first
+                self.mapView.removeAnnotation(view.annotation!)
+                dataController.viewContext.delete(dataController.viewContext.object(with: pinObjectID!))
+                    
+                try? dataController.viewContext.save()
             
+            }
         }
     }
+    
+    
  
     
     @IBAction func mapViewDidTap(_ sender: Any) {
         if (sender as AnyObject).state == UIGestureRecognizer.State.ended {
-            let tapPoint = (sender as AnyObject).location(in: mapView)
-            let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)
-            TouchPinRecord.setTouchRecord(newRecord: center)
-            
-            let pinData = PinData(context: dataController.viewContext)
-            pinData.lat = center.latitude
-            pinData.lon = center.longitude
+            if editState {
+                let tapPoint = (sender as AnyObject).location(in: mapView)
+                let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(latitude: center.latitude, longitude: center.longitude)
+                
+                let pinData = PinData(context: dataController.viewContext)
+                pinData.lat = center.latitude
+                pinData.lon = center.longitude
 
-            let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
-            CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
-                guard let placemark = placemarks?.first, error == nil else { return }
-                pinData.title = "\(placemark.locality ?? "Unknown")" + ", " + "\(placemark.administrativeArea ?? "Unknown")"
+                let location = CLLocation(latitude: center.latitude, longitude: center.longitude)
+                CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
+                    guard let placemark = placemarks?.first, error == nil else { return }
+                    annotation.title = "\(placemark.locality ?? "Unknown")" + ", " + "\(placemark.administrativeArea ?? "Unknown")"
+                    pinData.title = annotation.title
+                }
+                
+                annotations.append(annotation)
+                self.mapView.addAnnotation(annotation)
+                pin.updateValue(annotation, forKey: pinData.objectID)
+
+                try? dataController.viewContext.save()
+                
             }
-            
-            try? dataController.viewContext.save()
-
-            self.mapView.addAnnotations(TouchPinRecord.annotaions)
         }
     }
     

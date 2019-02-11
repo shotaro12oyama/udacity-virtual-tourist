@@ -22,6 +22,7 @@
 		E26F982C22088EDB0086C046 /* udacity_virtual_touristUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F982B22088EDB0086C046 /* udacity_virtual_touristUITests.swift */; };
 		E26F983C220A0EE40086C046 /* InitialMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983B220A0EE40086C046 /* InitialMapViewController.swift */; };
 		E26F983E220A18DF0086C046 /* TouchPinRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983D220A18DE0086C046 /* TouchPinRecord.swift */; };
+		E29D741822104EDB007FCC7D /* MapAnnotationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D741722104EDB007FCC7D /* MapAnnotationControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		E26F982D22088EDB0086C046 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E26F983B220A0EE40086C046 /* InitialMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialMapViewController.swift; sourceTree = "<group>"; };
 		E26F983D220A18DE0086C046 /* TouchPinRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchPinRecord.swift; sourceTree = "<group>"; };
+		E29D741722104EDB007FCC7D /* MapAnnotationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -159,6 +161,7 @@
 				E26F981422088EDB0086C046 /* LaunchScreen.storyboard */,
 				E26F981722088EDB0086C046 /* Info.plist */,
 				E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */,
+				E29D741722104EDB007FCC7D /* MapAnnotationControl.swift */,
 			);
 			path = "udacity-virtual-tourist";
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				E26F983E220A18DF0086C046 /* TouchPinRecord.swift in Sources */,
 				E26F983C220A0EE40086C046 /* InitialMapViewController.swift in Sources */,
 				8DB0A102220C0D2300691A07 /* FlickrClient.swift in Sources */,
+				E29D741822104EDB007FCC7D /* MapAnnotationControl.swift in Sources */,
 				8DB0A108220D33A300691A07 /* DataController.swift in Sources */,
 				E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */,
 				8DB0A10B220D397800691A07 /* PhotoDownloadData.xcdatamodeld in Sources */,

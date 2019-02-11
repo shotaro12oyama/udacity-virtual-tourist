@@ -11,7 +11,11 @@ import CoreLocation
 import MapKit
 
 class TouchPinRecord {
+    
+    
+    
     static var annotaions: [MKPointAnnotation] = []
+    
     
     class func setTouchRecord(newRecord: CLLocationCoordinate2D) {
         let annotation = MKPointAnnotation()

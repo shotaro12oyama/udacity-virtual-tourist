@@ -26,7 +26,7 @@
             </objects>
             <point key="canvasLocation" x="79" y="313"/>
         </scene>
-        <!--Initial Map View Controller-->
+        <!--Virtual Tourist-->
         <scene sceneID="G3c-08-U5E">
             <objects>
                 <viewController id="7F4-Gk-abb" customClass="InitialMapViewController" customModule="udacity_virtual_tourist" customModuleProvider="target" sceneMemberID="viewController">
@@ -42,18 +42,32 @@
                                     <outletCollection property="gestureRecognizers" destination="AEx-7w-FAM" appends="YES" id="toa-FT-d8p"/>
                                 </connections>
                             </mapView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap Pins to Delete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mH9-f5-PaH">
+                                <rect key="frame" x="0.0" y="627" width="375" height="40"/>
+                                <color key="backgroundColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="kIa-sD-bDN"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="mH9-f5-PaH" firstAttribute="bottom" secondItem="HeT-EU-yG8" secondAttribute="bottom" id="4Me-oW-ceZ"/>
                             <constraint firstItem="3Gb-Vj-aES" firstAttribute="top" secondItem="HeT-EU-yG8" secondAttribute="top" id="Alo-7X-RBO"/>
+                            <constraint firstItem="mH9-f5-PaH" firstAttribute="leading" secondItem="HeT-EU-yG8" secondAttribute="leading" id="KMO-DP-w2A"/>
                             <constraint firstItem="3Gb-Vj-aES" firstAttribute="bottom" secondItem="HeT-EU-yG8" secondAttribute="bottom" id="Lhg-pL-EGq"/>
                             <constraint firstItem="3Gb-Vj-aES" firstAttribute="leading" secondItem="HeT-EU-yG8" secondAttribute="leading" id="gtB-Uk-cI0"/>
+                            <constraint firstItem="HeT-EU-yG8" firstAttribute="trailing" secondItem="mH9-f5-PaH" secondAttribute="trailing" id="vOE-nw-xH0"/>
                             <constraint firstItem="3Gb-Vj-aES" firstAttribute="trailing" secondItem="HeT-EU-yG8" secondAttribute="trailing" id="vez-NB-3qO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="HeT-EU-yG8"/>
                     </view>
-                    <navigationItem key="navigationItem" id="7hS-1i-QbA"/>
+                    <navigationItem key="navigationItem" title="Virtual Tourist" id="7hS-1i-QbA"/>
                     <connections>
+                        <outlet property="deleteNotifyLabel" destination="mH9-f5-PaH" id="E5F-hx-lZo"/>
                         <outlet property="mapView" destination="3Gb-Vj-aES" id="Aom-mW-qLL"/>
                         <segue destination="MdK-T6-y6b" kind="show" identifier="" id="erd-JN-8Bp"/>
                     </connections>
