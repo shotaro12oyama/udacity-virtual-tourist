@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreData
 
-class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, MKMapViewDelegate, URLSessionDownloadDelegate {
+class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
@@ -21,6 +21,20 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     var annotationSelected: MKAnnotation?
     var dataController:DataController!
     var progress: Float = 0.0
+    
+    let downloadService = DownloadService()
+    lazy var downloadsSession: URLSession = {
+        //    let configuration = URLSessionConfiguration.default
+        let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
+        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+    }()
+    
+    // Get local file path: download task stores tune here; AV player plays it.
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    func localFilePath(for url: URL) -> URL {
+        return documentsPath.appendingPathComponent(url.lastPathComponent)
+    }
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,7 +90,10 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
         return pinView
     }
-    
+}
+
+
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -89,14 +106,11 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         //progressBar.layer.position = CGPoint(x: self.view.center.x, y: self.view.frame.height / 4)
         //self.view.addSubview(progressBar)
         DispatchQueue.main.async {
-            //let data = try? Data(contentsOf: photoInput!)
+            let data = try? Data(contentsOf: photoInput!)
             
-            let sessionConfig = URLSessionConfiguration.background(withIdentifier: "myapp-background")
-            let session = URLSession(configuration: sessionConfig, delegate: self, delegateQueue: nil)
-            let downloadTask = session.downloadTask(with: photoInput!)
-            downloadTask.resume()
+           
             
-            cell.photoImageView.image = UIImage(
+            //cell.photoImageView.image = UIImage(data: data!)
             
             cell.progressBar = UIProgressView(progressViewStyle: .default)
             cell.progressBar.setProgress(self.progress, animated: true)
@@ -107,41 +121,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     }
     
     
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        print("didFinishDownloading")
-        do {
-            if let data = NSData(contentsOf: location) {
-                let fileExtension = location.pathExtension
-                let filePath = getSaveDirectory() + getIdFromDateTime() + "." + fileExtension
-                print(filePath)
-                
-                
-                
-                try data.write(toFile: filePath, options: .atomic)
-                
-            }
-            
-        } catch let error as NSError {
-            
-            print("download error: \(error)")
-            
-        }
-        
-    }
 
-    
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
-        
-        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        
-        print(String(format: "%.2f", progress * 100) + "%")
-        
-        //DispatchQueue.main.async(execute: {
-          //  self.progressBar.setProgress(progress, animated: true)
-        //})
-    }
-    
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
