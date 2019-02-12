@@ -11,13 +11,6 @@ import Foundation
 class FlickrClient {
     
     static let apiKey = "9e9d1f8cb303c0ae25e22fcaab02e522"
-
-    struct PhotoDownload {
-        static var lat: Double = 0.0
-        static var lon: Double = 0.0
-        static var photoURL: [String?] = []
-    }
-    
     
     enum Endpoints {
         static let base =  "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList"
@@ -62,33 +55,23 @@ class FlickrClient {
     }
     
     
-    class func getPhotolist(completion: @escaping ([PhotoInfo], Error?) -> Void) {
+    class func getPhotolist(completion: @escaping ([FlickrImage], Error?) -> Void) {
         taskForGETRequest(url: Endpoints.getPhotolist.url, responseType: FlickrResponse.self) { response, error in
             if let response = response {
-                completion(response.photos.photo, nil)
+                var flickrImage: [FlickrImage] = []
+                for (index, item) in response.photos.photo.enumerated() {
+                    let url = URL(string: "https://farm\(item.farm).staticflickr.com/\(item.server)/\(item.id)_\(item.secret)_s.jpg")
+                    let filename = "\(item.server)/\(item.id)_\(item.secret)_s.jpg"
+                    flickrImage.append(FlickrImage(name: filename, imageURL: url!, index: index))
+                }
+                completion(flickrImage, nil)
             } else {
                 completion([], error)
             }
         }
     }
     
-    class func getPhotoDownloadInfo (photoInfo: [PhotoInfo], completion: @escaping (Bool, Error?) -> Void)  {
-        for item in photoInfo {
-            let url = "https://farm\(item.farm).staticflickr.com/\(item.server)/\(item.id)_\(item.secret)_s.jpg"
-            PhotoDownload.photoURL.append(url)
-        }
-        
-    }
     
-    /*
-    class func downloadPosterImage(path: String, completion: @escaping (Data?, Error?) -> Void) {
-        let task = URLSession.shared.dataTask(with: Endpoints.posterImage(path).url) { data, response, error in
-            DispatchQueue.main.async {
-                completion(data, error)
-            }
-        }
-        task.resume()
-    }*/
     
 }
 

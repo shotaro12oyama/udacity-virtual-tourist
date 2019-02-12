@@ -21,26 +21,13 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var annotationSelected: MKAnnotation?
     var dataController:DataController!
     var progress: Float = 0.0
-    
-    let downloadService = DownloadService()
-    lazy var downloadsSession: URLSession = {
-        //    let configuration = URLSessionConfiguration.default
-        let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
-        return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-    }()
-    
-    // Get local file path: download task stores tune here; AV player plays it.
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    func localFilePath(for url: URL) -> URL {
-        return documentsPath.appendingPathComponent(url.lastPathComponent)
-    }
-
+    var flickrNum: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
     
-        //configuring flowLayout
+        // Configure flowLayout
         let space:CGFloat = 1.5
         let dimension = (view.frame.size.width - (2 * space)) / 3.0
         flowLayout.minimumInteritemSpacing = space
@@ -48,7 +35,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
 
         // Do any additional setup after loading the view.
-                
+        // Show Annotation Pin on the map
         if let annotation = annotationSelected {
             let span = MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
             let region = MKCoordinateRegion(center: annotation.coordinate, span: span)
@@ -56,21 +43,26 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             self.mapView.addAnnotation(annotation)
         }
     
-        
-        FlickrClient.getPhotolist () { photoinfo , error in
-            FlickrClient.getPhotoDownloadInfo(photoInfo: photoinfo) { success, error in
-                if success {
-                    self.photoAlbumCollectionView.reloadData()
-                }
+        // Start Download
+        FlickrClient.getPhotolist() { flickrImage, error in
+            for item in flickrImage {
+                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+                let task = urlSession.downloadTask(with: item.imageURL)
+                task.resume()
+                //print(item.imageURL)
             }
+            self.flickrNum = flickrImage.count
         }
-        
+
     }
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.photoAlbumCollectionView.reloadData()
     }
+    
+    
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         
@@ -93,53 +85,3 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
 }
 
 
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        
-        var photoInput = URL(string: FlickrClient.PhotoDownload.photoURL[indexPath.item]!)
-        
-        //progressBar = UIProgressView(progressViewStyle: .default)
-        //progressBar.layer.position = CGPoint(x: self.view.center.x, y: self.view.frame.height / 4)
-        //self.view.addSubview(progressBar)
-        DispatchQueue.main.async {
-            let data = try? Data(contentsOf: photoInput!)
-            
-           
-            
-            //cell.photoImageView.image = UIImage(data: data!)
-            
-            cell.progressBar = UIProgressView(progressViewStyle: .default)
-            cell.progressBar.setProgress(self.progress, animated: true)
-            
-        }
-
-        return cell
-    }
-    
-    
-
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return FlickrClient.PhotoDownload.photoURL.count;
-    }
-    
-    
-    @IBAction func newCollectionButton (_ sender: Any) {
-        FlickrClient.getPhotolist () { photoinfo , error in
-            
-        }
-        self.photoAlbumCollectionView.reloadData()
-    }
-    
-    
-}

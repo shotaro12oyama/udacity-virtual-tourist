@@ -27,6 +27,7 @@
 		E26F983C220A0EE40086C046 /* InitialMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983B220A0EE40086C046 /* InitialMapViewController.swift */; };
 		E26F983E220A18DF0086C046 /* TouchPinRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F983D220A18DE0086C046 /* TouchPinRecord.swift */; };
 		E29D741822104EDB007FCC7D /* MapAnnotationControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D741722104EDB007FCC7D /* MapAnnotationControl.swift */; };
+		E29D741A221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29D7419221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,6 +74,7 @@
 		E26F983B220A0EE40086C046 /* InitialMapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialMapViewController.swift; sourceTree = "<group>"; };
 		E26F983D220A18DE0086C046 /* TouchPinRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TouchPinRecord.swift; sourceTree = "<group>"; };
 		E29D741722104EDB007FCC7D /* MapAnnotationControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapAnnotationControl.swift; sourceTree = "<group>"; };
+		E29D7419221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhotoAlbumViewController+ CollectionViewDelegate.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 			children = (
 				E26F983B220A0EE40086C046 /* InitialMapViewController.swift */,
 				8D6D71D5220A688E00862ADC /* PhotoAlbumViewController.swift */,
+				E29D7419221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift */,
 				8DA3BDC72212E57E006B8242 /* PhotoAlbumViewController+URLSessionDelegate.swift */,
 				8D6D71D7220A8CE400862ADC /* PhotoAlbumCollectionViewCell.swift */,
 			);
@@ -343,6 +346,7 @@
 				8DA3BDCF2212EE64006B8242 /* FlickrImage.swift in Sources */,
 				8DA3BDCD2212E950006B8242 /* Download.swift in Sources */,
 				8DB0A108220D33A300691A07 /* DataController.swift in Sources */,
+				E29D741A221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift in Sources */,
 				E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */,
 				8DA3BDC82212E57E006B8242 /* PhotoAlbumViewController+URLSessionDelegate.swift in Sources */,
 				8DB0A10B220D397800691A07 /* PhotoDownloadData.xcdatamodeld in Sources */,

@@ -11,7 +11,7 @@ import UIKit
 
 extension PhotoAlbumViewController: URLSessionDownloadDelegate {
     
-    
+    /*
     // Stores downloaded file
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let sourceURL = downloadTask.originalRequest?.url else { return }
@@ -26,27 +26,31 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         } catch let error {
             print("Could not copy file to disk: \(error.localizedDescription)")
         }
-    }
+    }*/
     
+
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
+        print("downloadLocation:", location)
+    }
+
     // Updates progress info
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
-                    didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
-                    totalBytesExpectedToWrite: Int64) {
-        // 1
-        guard let url = downloadTask.originalRequest?.url,
-            let download = downloadService.activeDownloads[url]  else { return }
-        // 2
-        download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite,
-                                                  countStyle: .file)
-        // 4
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
+        
+        self.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        print(self.progress)
+        
+        let url = downloadTask.originalRequest?.url
+        downloadID = FlickrDictionary[url]
+        downloadID.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        
         DispatchQueue.main.async {
-            if let photoAlbumViewCell = self.photoAlbumCollectionView.cellForItem(at: IndexPath(row: download.flickrImage.index,
-                                                                       section: 0)) as? PhotoAlbumCollectionViewCell {
-                photoAlbumViewCell.updateDisplay(progress: download.progress, totalSize: totalSize)
+            if let trackCell = self.tableView.cellForRow(at: IndexPath(row: download.track.index,
+                                                                       section: 0)) as? TrackCell {
+                trackCell.updateDisplay(progress: download.progress, totalSize: totalSize)
             }
         }
     }
-
 }
 

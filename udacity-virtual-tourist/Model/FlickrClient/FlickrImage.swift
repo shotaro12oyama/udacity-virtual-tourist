@@ -13,8 +13,8 @@ class FlickrImage {
     
     let name: String
     let imageURL: URL
-    let index: Int
     var downloaded = false
+    var index: Int
     
     init(name: String, imageURL: URL, index: Int) {
         self.name = name
