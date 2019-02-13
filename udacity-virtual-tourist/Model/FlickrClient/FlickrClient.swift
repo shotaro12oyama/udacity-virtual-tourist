@@ -11,7 +11,10 @@ import Foundation
 class FlickrClient {
     
     static let apiKey = "9e9d1f8cb303c0ae25e22fcaab02e522"
+    static var flickrImages: [FlickrImage] = []
+    static var flickrDict: [URL: Download] = [:]
     
+
     enum Endpoints {
         static let base =  "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList"
         static let apiKeyParam = "&api_key=\(FlickrClient.apiKey)"
@@ -58,13 +61,12 @@ class FlickrClient {
     class func getPhotolist(completion: @escaping ([FlickrImage], Error?) -> Void) {
         taskForGETRequest(url: Endpoints.getPhotolist.url, responseType: FlickrResponse.self) { response, error in
             if let response = response {
-                var flickrImage: [FlickrImage] = []
                 for (index, item) in response.photos.photo.enumerated() {
                     let url = URL(string: "https://farm\(item.farm).staticflickr.com/\(item.server)/\(item.id)_\(item.secret)_s.jpg")
                     let filename = "\(item.server)/\(item.id)_\(item.secret)_s.jpg"
-                    flickrImage.append(FlickrImage(name: filename, imageURL: url!, index: index))
+                    flickrImages.append(FlickrImage(name: filename, imageURL: url!, index: index))
                 }
-                completion(flickrImage, nil)
+                completion(flickrImages, nil)
             } else {
                 completion([], error)
             }

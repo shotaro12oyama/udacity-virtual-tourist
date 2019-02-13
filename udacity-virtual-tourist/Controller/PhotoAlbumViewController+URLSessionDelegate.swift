@@ -41,16 +41,16 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         print(self.progress)
         
         let url = downloadTask.originalRequest?.url
-        downloadID = FlickrDictionary[url]
-        downloadID.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        let downloadID = FlickrClient.flickrDict[url!]
+        self.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
         
-        
+        /*
         DispatchQueue.main.async {
             if let trackCell = self.tableView.cellForRow(at: IndexPath(row: download.track.index,
                                                                        section: 0)) as? TrackCell {
                 trackCell.updateDisplay(progress: download.progress, totalSize: totalSize)
             }
-        }
+        }*/
     }
 }
 

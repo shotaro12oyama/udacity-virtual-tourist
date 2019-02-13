@@ -44,16 +44,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         }
     
         // Start Download
-        FlickrClient.getPhotolist() { flickrImage, error in
-            for item in flickrImage {
+        FlickrClient.getPhotolist() { flickrImages, error in
+            for item in flickrImages {
                 let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
                 let task = urlSession.downloadTask(with: item.imageURL)
+                let download: Download
+                FlickrClient.flickrDict[item.imageURL] =
                 task.resume()
                 //print(item.imageURL)
             }
-            self.flickrNum = flickrImage.count
         }
-
+        self.photoAlbumCollectionView.reloadData()
     }
     
     

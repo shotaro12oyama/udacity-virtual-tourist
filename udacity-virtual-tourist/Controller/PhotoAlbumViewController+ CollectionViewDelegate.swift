@@ -25,7 +25,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             //let data = try? Data(contentsOf: photoInput!)
             
             //cell.photoImageView.image = UIImage(data: data!)
-            
+            print(indexPath)
             cell.progressBar = UIProgressView(progressViewStyle: .default)
             cell.progressBar.setProgress(self.progress, animated: true)
             
@@ -44,13 +44,18 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return self.flickrNum;
+        return FlickrClient.flickrImages.count;
     }
     
     
     @IBAction func newCollectionButton (_ sender: Any) {
-        FlickrClient.getPhotolist () { photoinfo , error in
-            
+        FlickrClient.getPhotolist() { flickrImages, error in
+            for item in flickrImages {
+                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
+                let task = urlSession.downloadTask(with: item.imageURL)
+                task.resume()
+                //print(item.imageURL)
+            }
         }
         self.photoAlbumCollectionView.reloadData()
     }
