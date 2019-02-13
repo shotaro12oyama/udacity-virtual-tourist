@@ -11,9 +11,15 @@ import Foundation
 class Download {
     
     // Download service sets these values:
+    var flickrImage: FlickrImage
+    init (flickrImage: FlickrImage) {
+        self.flickrImage = flickrImage
+    }
+    
     var task: URLSessionDownloadTask?
     var isDownloading = false
     var resumeData: Data?
+    var imageURL: URL?
     
     // Download delegate sets this value:
     var progress: Float = 0
