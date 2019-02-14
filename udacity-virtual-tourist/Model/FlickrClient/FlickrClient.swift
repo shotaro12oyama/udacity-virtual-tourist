@@ -12,8 +12,6 @@ class FlickrClient {
     
     static let apiKey = "9e9d1f8cb303c0ae25e22fcaab02e522"
     static var flickrImages: [FlickrImage] = []
-    var flickrDict: [URL: Download] = [:]
-    var downloadSession: URLSession!
 
     enum Endpoints {
         static let base =  "https://api.flickr.com/services/rest/?method=flickr.interestingness.getList"
@@ -73,13 +71,7 @@ class FlickrClient {
         }
     }
     
-    func downloadFlickr (_ flickrImage: FlickrImage) {
-        let download = Download(flickrImage: flickrImage)
-        download.task = downloadSession.downloadTask(with: flickrImage.imageURL)
-        download.task!.resume()
-        download.isDownloading = true
-        flickrDict[download.imageURL] = download
-    }
+
     
 }
 

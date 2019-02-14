@@ -25,9 +25,9 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             //let data = try? Data(contentsOf: photoInput!)
             
             //cell.photoImageView.image = UIImage(data: data!)
-            print(indexPath)
+
             cell.progressBar = UIProgressView(progressViewStyle: .default)
-            cell.progressBar.setProgress(self.progress, animated: true)
+            cell.progressBar.setProgress(0.1, animated: true)
             
         }
         
@@ -51,10 +51,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     @IBAction func newCollectionButton (_ sender: Any) {
         FlickrClient.getPhotolist() { flickrImages, error in
             for item in flickrImages {
-                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-                let task = urlSession.downloadTask(with: item.imageURL)
-                task.resume()
-                //print(item.imageURL)
+                self.downloadService.downloadFlickr(item)
             }
         }
         self.photoAlbumCollectionView.reloadData()

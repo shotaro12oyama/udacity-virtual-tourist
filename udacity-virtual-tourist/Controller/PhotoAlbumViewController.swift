@@ -21,6 +21,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var annotationSelected: MKAnnotation?
     var dataController:DataController!
     
+    let downloadService = DownloadService()
     lazy var downloadSession: URLSession = {
         //    let configuration = URLSessionConfiguration.default
         let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
@@ -49,13 +50,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
         // Start Download
         
-        FlickrClient.downloadSession = downloadSession
+        downloadService.downloadSession = downloadSession
         FlickrClient.getPhotolist() { flickrImages, error in
             for item in flickrImages {
-                let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: OperationQueue())
-                
-                
-                //print(item.imageURL)
+                self.downloadService.downloadFlickr(item)
             }
         }
         self.photoAlbumCollectionView.reloadData()

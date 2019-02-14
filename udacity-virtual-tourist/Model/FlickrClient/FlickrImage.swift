@@ -6,7 +6,7 @@
 //  Copyright © 2019 尾山昌太郎. All rights reserved.
 //
 
-import Foundation.NSURL
+import Foundation
 
 // Query service creates Track objects
 class FlickrImage {

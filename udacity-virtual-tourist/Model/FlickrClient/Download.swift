@@ -14,6 +14,7 @@ class Download {
     var flickrImage: FlickrImage
     init (flickrImage: FlickrImage) {
         self.flickrImage = flickrImage
+        self.imageURL = flickrImage.imageURL
     }
     
     var task: URLSessionDownloadTask?
@@ -24,4 +25,30 @@ class Download {
     // Download delegate sets this value:
     var progress: Float = 0
 
+}
+
+class DownloadService {
+    
+    // ViewController creates downloadsSession
+    var downloadSession: URLSession!
+    var activeDownloads: [URL: Download] = [:]
+    var indexDownloads: [Int: URL] = [:]
+    
+    func downloadFlickr (_ flickrImage: FlickrImage) {
+        let download = Download(flickrImage: flickrImage)
+        download.task = downloadSession.downloadTask(with: flickrImage.imageURL)
+        download.task!.resume()
+        download.isDownloading = true
+        activeDownloads[download.imageURL!] = download
+        indexDownloads[flickrImage.index] = download.imageURL!
+    }
+    
+    func progressWithIndex (index : Int) -> Float {
+        let url = indexDownloads[index]
+        let download = activeDownloads[url!]
+        
+        var progress: Float = 0.0
+        
+        return progress
+    }
 }
