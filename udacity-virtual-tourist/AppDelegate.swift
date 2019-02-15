@@ -13,6 +13,7 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var backgroundSessionCompletionHandler: (() -> Void)?
 
     let dataController = DataController(modelName: "PhotoDownloadData")
 
@@ -24,6 +25,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initialMapViewController.dataController = dataController
         return true
     }
+    
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        backgroundSessionCompletionHandler = completionHandler
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

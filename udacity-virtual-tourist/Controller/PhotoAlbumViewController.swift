@@ -28,6 +28,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
+    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    func localFilePath(for url: URL) -> URL {
+        return documentsPath.appendingPathComponent(url.lastPathComponent)
+    }
+    
+    
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -56,13 +64,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
                 self.downloadService.downloadFlickr(item)
             }
         }
-        self.photoAlbumCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.photoAlbumCollectionView.reloadData()
+        }
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.photoAlbumCollectionView.reloadData()
+        DispatchQueue.main.async {
+            self.photoAlbumCollectionView.reloadData()
+        }
     }
     
     

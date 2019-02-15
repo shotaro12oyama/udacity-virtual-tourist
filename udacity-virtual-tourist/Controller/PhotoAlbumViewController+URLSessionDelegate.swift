@@ -11,7 +11,7 @@ import UIKit
 
 extension PhotoAlbumViewController: URLSessionDownloadDelegate {
     
-    /*
+
     // Stores downloaded file
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let sourceURL = downloadTask.originalRequest?.url else { return }
@@ -26,13 +26,9 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         } catch let error {
             print("Could not copy file to disk: \(error.localizedDescription)")
         }
-    }*/
-    
-
-    
-    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         print("downloadLocation:", location)
     }
+    
 
     // Updates progress info
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
@@ -42,6 +38,17 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
 
         download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
 
+    }
+    
+    // Standard background session handler
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        DispatchQueue.main.async {
+            if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                let completionHandler = appDelegate.backgroundSessionCompletionHandler {
+                appDelegate.backgroundSessionCompletionHandler = nil
+                completionHandler()
+            }
+        }
     }
 }
 

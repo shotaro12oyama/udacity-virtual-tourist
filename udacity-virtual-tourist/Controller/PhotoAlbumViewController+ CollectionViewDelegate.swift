@@ -16,11 +16,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
-        //var photoInput = URL(string: FlickrClient.PhotoDownload.photoURL[indexPath.item]!)
-        
-        //progressBar = UIProgressView(progressViewStyle: .default)
-        //progressBar.layer.position = CGPoint(x: self.view.center.x, y: self.view.frame.height / 4)
-        //self.view.addSubview(progressBar)
+
         let download = downloadService.activeDownloads[FlickrClient.flickrImages[indexPath.item].imageURL]
         let progress = download?.progress
         

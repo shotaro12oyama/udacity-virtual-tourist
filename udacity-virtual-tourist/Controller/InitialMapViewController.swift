@@ -49,6 +49,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
     
     
     override func viewWillAppear(_ animated: Bool) {
+        editState = true
         super.viewWillAppear(animated)
         self.mapView.addAnnotations(annotations)
     }
@@ -82,9 +83,9 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = true
+            pinView!.canShowCallout = false
             pinView!.pinTintColor = .red
-            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            //pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
    
         }
         else {
@@ -112,8 +113,12 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
             
             }
         }
+        control.sendAction(Selector("map_test"), to: self, for: nil)
     }
     
+    @objc func map_test(sender: UIControl) {
+        print("TTT")
+    }
     
  
     

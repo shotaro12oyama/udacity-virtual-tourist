@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G3025" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FlickrPhoto" representedClassName="FlickrPhoto" syncable="YES" codeGenerationType="class">
         <attribute name="photoURL" optional="YES" attributeType="URI" syncable="YES"/>
         <relationship name="pinAreaPhotoDownload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PinData" inverseName="pinAreaPhotoDownload" inverseEntity="PinData" syncable="YES"/>
@@ -8,10 +8,10 @@
         <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="pinAreaPhotoDownload" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="FlickrPhoto" inverseName="pinAreaPhotoDownload" inverseEntity="FlickrPhoto" syncable="YES"/>
+        <relationship name="pinAreaPhotoDownload" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FlickrPhoto" inverseName="pinAreaPhotoDownload" inverseEntity="FlickrPhoto" syncable="YES"/>
     </entity>
     <elements>
-        <element name="FlickrPhoto" positionX="-3752.73046875" positionY="267.01171875" width="128" height="75"/>
-        <element name="PinData" positionX="-4046.23046875" positionY="255.4140625" width="128" height="105"/>
+        <element name="FlickrPhoto" positionX="-63" positionY="-27" width="128" height="73"/>
+        <element name="PinData" positionX="228.69140625" positionY="-95.2265625" width="128" height="103"/>
     </elements>
 </model>
