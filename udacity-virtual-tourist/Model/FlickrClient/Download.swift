@@ -32,7 +32,7 @@ class DownloadService {
     // ViewController creates downloadsSession
     var downloadSession: URLSession!
     var activeDownloads: [URL: Download] = [:]
-    var indexDownloads: [Int: URL] = [:]
+    //var indexDownloads:
     
     func downloadFlickr (_ flickrImage: FlickrImage) {
         let download = Download(flickrImage: flickrImage)
@@ -40,15 +40,7 @@ class DownloadService {
         download.task!.resume()
         download.isDownloading = true
         activeDownloads[download.imageURL!] = download
-        indexDownloads[flickrImage.index] = download.imageURL!
+        //indexDownloads[flickrImage.index] = download.imageURL!
     }
     
-    func progressWithIndex (index : Int) -> Float {
-        let url = indexDownloads[index]
-        let download = activeDownloads[url!]
-        
-        var progress: Float = 0.0
-        
-        return progress
-    }
 }

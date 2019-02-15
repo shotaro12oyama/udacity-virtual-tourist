@@ -41,11 +41,7 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
             let download = downloadService.activeDownloads[url]  else { return }
 
         download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite,
-                                                  countStyle: .file)
-        DispatchQueue.main.async {
-            
-        }
+
     }
 }
 

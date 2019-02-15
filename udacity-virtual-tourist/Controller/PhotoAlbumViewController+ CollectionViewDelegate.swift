@@ -21,14 +21,13 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         //progressBar = UIProgressView(progressViewStyle: .default)
         //progressBar.layer.position = CGPoint(x: self.view.center.x, y: self.view.frame.height / 4)
         //self.view.addSubview(progressBar)
+        let download = downloadService.activeDownloads[FlickrClient.flickrImages[indexPath.item].imageURL]
+        let progress = download?.progress
+        
         DispatchQueue.main.async {
             //let data = try? Data(contentsOf: photoInput!)
-            
+            cell.progressBar.setProgress(progress!, animated: true)
             //cell.photoImageView.image = UIImage(data: data!)
-
-            cell.progressBar = UIProgressView(progressViewStyle: .default)
-            cell.progressBar.setProgress(0.1, animated: true)
-            
         }
         
         return cell
