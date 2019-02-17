@@ -40,11 +40,12 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                 }
             }
         } else {
-            let downloadedImageURL = downloadedImage[indexPath.item]
-            cell.progressBar.isHidden = true
-            let data = try? Data(contentsOf: downloadedImageURL)
-            cell.photoImageView.image = UIImage(data: data!)
-            
+            DispatchQueue.main.async {
+                let downloadedImageURL = self.downloadedImage[indexPath.item]
+                cell.progressBar.isHidden = true
+                let data = try? Data(contentsOf: downloadedImageURL)
+                cell.photoImageView.image = UIImage(data: data!)
+            }
         }
         
         return cell

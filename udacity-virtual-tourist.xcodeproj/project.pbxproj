@@ -177,9 +177,9 @@
 		E26F980722088EDA0086C046 /* udacity-virtual-tourist */ = {
 			isa = PBXGroup;
 			children = (
+				E26F980822088EDA0086C046 /* AppDelegate.swift */,
 				E26DE5A7221912E800D9BAFC /* Stroryboard */,
 				E26DE5A6221912D400D9BAFC /* View */,
-				E26F980822088EDA0086C046 /* AppDelegate.swift */,
 				8DB0A106220D339000691A07 /* Model */,
 				8DB0A0F1220C0AAE00691A07 /* Controller */,
 				E26F981222088EDB0086C046 /* Assets.xcassets */,
