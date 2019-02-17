@@ -19,7 +19,6 @@
 		E26DE5A92219156F00D9BAFC /* PhotoAlbumViewController+NSFetcheResultsControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26DE5A82219156F00D9BAFC /* PhotoAlbumViewController+NSFetcheResultsControllerDelegate.swift */; };
 		E26F980922088EDA0086C046 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F980822088EDA0086C046 /* AppDelegate.swift */; };
 		E26F980E22088EDA0086C046 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E26F980C22088EDA0086C046 /* Main.storyboard */; };
-		E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */; };
 		E26F981322088EDB0086C046 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E26F981222088EDB0086C046 /* Assets.xcassets */; };
 		E26F981622088EDB0086C046 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E26F981422088EDB0086C046 /* LaunchScreen.storyboard */; };
 		E26F982122088EDB0086C046 /* udacity_virtual_touristTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26F982022088EDB0086C046 /* udacity_virtual_touristTests.swift */; };
@@ -59,7 +58,6 @@
 		E26F980522088EDA0086C046 /* udacity-virtual-tourist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "udacity-virtual-tourist.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E26F980822088EDA0086C046 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E26F980D22088EDA0086C046 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		E26F981022088EDA0086C046 /* udacity_virtual_tourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = udacity_virtual_tourist.xcdatamodel; sourceTree = "<group>"; };
 		E26F981222088EDB0086C046 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E26F981522088EDB0086C046 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E26F981722088EDB0086C046 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -186,7 +184,6 @@
 				8DB0A0F1220C0AAE00691A07 /* Controller */,
 				E26F981222088EDB0086C046 /* Assets.xcassets */,
 				E26F981722088EDB0086C046 /* Info.plist */,
-				E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */,
 			);
 			path = "udacity-virtual-tourist";
 			sourceTree = "<group>";
@@ -347,7 +344,6 @@
 				8DB0A108220D33A300691A07 /* DataController.swift in Sources */,
 				E29D741A221360DE007FCC7D /* PhotoAlbumViewController+ CollectionViewDelegate.swift in Sources */,
 				E26DE5A92219156F00D9BAFC /* PhotoAlbumViewController+NSFetcheResultsControllerDelegate.swift in Sources */,
-				E26F981122088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld in Sources */,
 				8D8A1CA922141D12004B43F3 /* Download.swift in Sources */,
 				8DA3BDC82212E57E006B8242 /* PhotoAlbumViewController+URLSessionDelegate.swift in Sources */,
 				8DB0A10B220D397800691A07 /* PhotoDownloadData.xcdatamodeld in Sources */,
@@ -691,16 +687,6 @@
 			);
 			currentVersion = 8DB0A10A220D397800691A07 /* PhotoDownloadData.xcdatamodel */;
 			path = PhotoDownloadData.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-		E26F980F22088EDA0086C046 /* udacity_virtual_tourist.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				E26F981022088EDA0086C046 /* udacity_virtual_tourist.xcdatamodel */,
-			);
-			currentVersion = E26F981022088EDA0086C046 /* udacity_virtual_tourist.xcdatamodel */;
-			path = udacity_virtual_tourist.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
