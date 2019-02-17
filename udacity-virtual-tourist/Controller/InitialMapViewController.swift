@@ -17,6 +17,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
     
     var dataController: DataController!
     var editState: Bool = true
+    var pinData: PinData!
     
     var fetchedResultsController: NSFetchedResultsController<PinData>!
     
@@ -83,9 +84,9 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
         
         if pinView == nil {
             pinView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            pinView!.canShowCallout = false
+            pinView!.canShowCallout = true
             pinView!.pinTintColor = .red
-            //pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+            pinView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
    
         }
         else {
@@ -103,6 +104,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
                 let detailController = self.storyboard!.instantiateViewController(withIdentifier: "PhotoAlbumViewController") as! PhotoAlbumViewController
                      self.navigationController!.pushViewController(detailController, animated: true)
                 detailController.annotationSelected = view.annotation
+                detailController.pinData = pinData
                 detailController.dataController = dataController
             } else {
                 let pinObjectID = pin.filter{$0.value == view.annotation as! MKPointAnnotation}.keys.first
@@ -113,13 +115,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
             
             }
         }
-        control.sendAction(Selector("map_test"), to: self, for: nil)
     }
-    
-    @objc func map_test(sender: UIControl) {
-        print("TTT")
-    }
-    
  
     
     @IBAction func mapViewDidTap(_ sender: Any) {
@@ -131,7 +127,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
                 let annotation = MKPointAnnotation()
                 annotation.coordinate = CLLocationCoordinate2D(latitude: center.latitude, longitude: center.longitude)
                 
-                let pinData = PinData(context: dataController.viewContext)
+                pinData = PinData(context: dataController.viewContext)
                 pinData.lat = center.latitude
                 pinData.lon = center.longitude
 
@@ -139,7 +135,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
                 CLGeocoder().reverseGeocodeLocation(location) { placemarks, error in
                     guard let placemark = placemarks?.first, error == nil else { return }
                     annotation.title = "\(placemark.locality ?? "Unknown")" + ", " + "\(placemark.administrativeArea ?? "Unknown")"
-                    pinData.title = annotation.title
+                    self.pinData.title = annotation.title
                 }
                 
                 annotations.append(annotation)

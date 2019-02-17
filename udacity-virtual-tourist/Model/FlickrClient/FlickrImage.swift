@@ -14,7 +14,6 @@ class FlickrImage {
     let name: String
     let imageURL: URL
     var downloaded = false
-    var downloadID: URLSessionDownloadTask?
     var index: Int
     var progess: Float = 0.0
     

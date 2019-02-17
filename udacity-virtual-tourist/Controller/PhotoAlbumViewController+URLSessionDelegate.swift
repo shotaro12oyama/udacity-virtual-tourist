@@ -15,10 +15,14 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
     // Stores downloaded file
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         guard let sourceURL = downloadTask.originalRequest?.url else { return }
-        let download = downloadService.activeDownloads[sourceURL]
-        downloadService.activeDownloads[sourceURL] = nil
+        //downloadService.activeDownloads[sourceURL] = nil
         let destinationURL = localFilePath(for: sourceURL)
-        print(destinationURL)
+        
+        let flickrPhoto = FlickrPhoto(context: dataController.viewContext)
+        flickrPhoto.photoURL = destinationURL
+        flickrPhoto.pindata = pinData
+        try? dataController.viewContext.save()
+                
         let fileManager = FileManager.default
         try? fileManager.removeItem(at: destinationURL)
         do {
@@ -37,6 +41,11 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
             let download = downloadService.activeDownloads[url]  else { return }
 
         download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        if totalBytesWritten == totalBytesExpectedToWrite {
+            download.isDownloading = false
+            download.flickrImage.downloaded = true
+        }
 
     }
     
@@ -50,5 +59,7 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
             }
         }
     }
+    
+    
 }
 

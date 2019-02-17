@@ -16,14 +16,35 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
-
-        let download = downloadService.activeDownloads[FlickrClient.flickrImages[indexPath.item].imageURL]
-        let progress = download?.progress
+        var progress: Float = 0.0
+        var isDownloading: Bool = false
         
-        DispatchQueue.main.async {
-            //let data = try? Data(contentsOf: photoInput!)
-            cell.progressBar.setProgress(progress!, animated: true)
-            //cell.photoImageView.image = UIImage(data: data!)
+        if downloadedImage.count == 0 {
+            if let download = downloadService.activeDownloads[FlickrClient.flickrImages[indexPath.item].imageURL] {
+                progress = download.progress
+                isDownloading = download.isDownloading
+            } else {
+                print("download object is nil")
+            }
+        
+            //setupFetchedResultsController()
+
+            DispatchQueue.main.async {
+                if isDownloading {
+                    cell.progressBar.isHidden = false
+                    cell.progressBar.setProgress(progress, animated: true)
+                } else {
+                    cell.progressBar.isHidden = true
+                    let data = try? Data(contentsOf: FlickrClient.flickrImages[indexPath.item].imageURL)
+                    cell.photoImageView.image = UIImage(data: data!)
+                }
+            }
+        } else {
+            let downloadedImageURL = downloadedImage[indexPath.item]
+            cell.progressBar.isHidden = true
+            let data = try? Data(contentsOf: downloadedImageURL)
+            cell.photoImageView.image = UIImage(data: data!)
+            
         }
         
         return cell
@@ -49,6 +70,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                 self.downloadService.downloadFlickr(item)
             }
         }
+        
         self.photoAlbumCollectionView.reloadData()
     }
     

@@ -32,7 +32,6 @@ class DownloadService {
     // ViewController creates downloadsSession
     var downloadSession: URLSession!
     var activeDownloads: [URL: Download] = [:]
-    //var indexDownloads:
     
     func downloadFlickr (_ flickrImage: FlickrImage) {
         let download = Download(flickrImage: flickrImage)
@@ -40,7 +39,6 @@ class DownloadService {
         download.task!.resume()
         download.isDownloading = true
         activeDownloads[download.imageURL!] = download
-        //indexDownloads[flickrImage.index] = download.imageURL!
     }
     
 }

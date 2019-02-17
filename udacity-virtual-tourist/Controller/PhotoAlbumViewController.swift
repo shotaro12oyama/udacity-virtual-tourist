@@ -20,7 +20,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     var annotationSelected: MKAnnotation?
     var dataController:DataController!
+    var pinData: PinData!
+    var downloadedImage: [URL] = []
     
+    // Prepare Download
     let downloadService = DownloadService()
     lazy var downloadSession: URLSession = {
         //    let configuration = URLSessionConfiguration.default
@@ -28,17 +31,17 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
     
+    // Prepare File Save
     let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     func localFilePath(for url: URL) -> URL {
         return documentsPath.appendingPathComponent(url.lastPathComponent)
     }
     
-    
-    
+    // Prepare Core Data
+    var fetchedResultsController:NSFetchedResultsController<FlickrPhoto>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
     
         // Configure flowLayout
         let space:CGFloat = 1.5
@@ -55,15 +58,28 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             self.mapView.setRegion(region, animated:true)
             self.mapView.addAnnotation(annotation)
         }
-    
-        // Start Download
+
+        let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
+        let predicate = NSPredicate(format: "pindata == %@", pinData)
+        fetchRequest.predicate = predicate
+        if let result = try? dataController.viewContext.fetch(fetchRequest) {
+            for item in result {
+                downloadedImage.append(item.photoURL!)
+            }
+            print("detect")
+            print(result.count)
+        }
         
-        downloadService.downloadSession = downloadSession
-        FlickrClient.getPhotolist() { flickrImages, error in
-            for item in flickrImages {
-                self.downloadService.downloadFlickr(item)
+        if downloadedImage.count == 0 {
+            // Start Download
+            downloadService.downloadSession = downloadSession
+            FlickrClient.getPhotolist() { flickrImages, error in
+                for item in flickrImages {
+                    self.downloadService.downloadFlickr(item)
+                }
             }
         }
+        
         DispatchQueue.main.async {
             self.photoAlbumCollectionView.reloadData()
         }
@@ -72,9 +88,15 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //setupFetchedResultsController()
         DispatchQueue.main.async {
             self.photoAlbumCollectionView.reloadData()
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        //fetchedResultsController = nil
     }
     
     
