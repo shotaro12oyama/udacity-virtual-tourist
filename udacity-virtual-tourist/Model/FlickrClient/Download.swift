@@ -20,6 +20,7 @@ class Download {
     }
     
     var task: URLSessionDownloadTask?
+    var sharedTask: URLSessionDataTask?
     var isDownloading = false
     var downloadedImage: UIImage?
     var downloadedURL: URL?
@@ -50,6 +51,11 @@ class DownloadService {
     func getDownloadSessionStatus(index: Int) -> Download {
         let downloadURL = downloadIndex[index]
         let task = downloads[downloadURL]
+        return task!
+    }
+    
+    func getDownloadSessionStatus(url: URL) -> Download {
+        let task = downloads[url]
         return task!
     }
     

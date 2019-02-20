@@ -26,7 +26,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             cell.progressBar.setProgress(download.progress, animated: true)
         } else {
             cell.photoImageView.image = download.downloadedImage
-            cell.progressBar.isHidden = false
+            cell.progressBar.isHidden = true
         }
         return cell
     }

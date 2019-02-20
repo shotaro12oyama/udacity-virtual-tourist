@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension PhotoAlbumViewController: URLSessionTaskDelegate {
+extension PhotoAlbumViewController: URLSessionDownloadDelegate {
     
 
     // Stores downloaded file
@@ -37,10 +37,10 @@ extension PhotoAlbumViewController: URLSessionTaskDelegate {
         // Change Download Status
         // Get Cell/Download Index
         let url = downloadTask.originalRequest?.url
-        let downloadIndex = downloadService.getDownloadIndex(url: url!)
+        //let downloadIndex = downloadService.getDownloadIndex(url: url!)
         
         // Set Download Status
-        let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
+        let download = downloadService.getDownloadSessionStatus(url: url!) //downloadService.getDownloadSessionStatus(index: downloadIndex)
         download.isDownloading = false
         let data = try? Data(contentsOf: destinationURL)
         download.downloadedURL = sourceURL
@@ -58,18 +58,19 @@ extension PhotoAlbumViewController: URLSessionTaskDelegate {
         
         // Get Cell/Download Index
         let url = downloadTask.originalRequest?.url
-        let downloadIndex = downloadService.getDownloadIndex(url: url!)
+        //let downloadIndex = downloadService.getDownloadIndex(url: url!)
         
         // Set Download Status
-        let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
+        //let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
+        let download = downloadService.getDownloadSessionStatus(url: url!)
         download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
         download.isDownloading = true
         
         // Refresh ProgressBar in View
         DispatchQueue.main.async {
-            print("test")
             self.photoAlbumCollectionView.reloadData()
         }
+        print("test")
     }
     
     // Standard background session handler
