@@ -13,41 +13,21 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
+        // Initialize Cell
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
-        var progress: Float = 0.0
-        var isDownloading: Bool = false
+        // Receive Download Status
+        let download = downloadService.getDownloadSessionStatus(index: indexPath.item)
         
-        if downloadedImage.count == 0 {
-            if let download = downloadService.activeDownloads[FlickrClient.flickrImages[indexPath.item].imageURL] {
-                progress = download.progress
-                isDownloading = download.isDownloading
-            } else {
-                print("download object is nil")
-            }
-        
-            //setupFetchedResultsController()
-
-            DispatchQueue.main.async {
-                if isDownloading {
-                    cell.progressBar.isHidden = false
-                    cell.progressBar.setProgress(progress, animated: true)
-                } else {
-                    cell.progressBar.isHidden = true
-                    let data = try? Data(contentsOf: FlickrClient.flickrImages[indexPath.item].imageURL)
-                    cell.photoImageView.image = UIImage(data: data!)
-                }
-            }
+        // Show the progrss status
+        if download.isDownloading {
+            cell.progressBar.isHidden = false
+            cell.progressBar.setProgress(download.progress, animated: true)
         } else {
-            DispatchQueue.main.async {
-                let downloadedImageURL = self.downloadedImage[indexPath.item]
-                cell.progressBar.isHidden = true
-                let data = try? Data(contentsOf: downloadedImageURL)
-                cell.photoImageView.image = UIImage(data: data!)
-            }
+            cell.photoImageView.image = download.downloadedImage
+            cell.progressBar.isHidden = false
         }
-        
         return cell
     }
     
@@ -66,13 +46,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     
     
     @IBAction func newCollectionButton (_ sender: Any) {
-        FlickrClient.getPhotolist() { flickrImages, error in
-            for item in flickrImages {
-                self.downloadService.downloadFlickr(item)
-            }
-        }
-        
-        self.photoAlbumCollectionView.reloadData()
+        getNewCollection()
     }
     
     

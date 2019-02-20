@@ -40,6 +40,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     // Prepare Core Data
     var fetchedResultsController:NSFetchedResultsController<FlickrPhoto>!
     
+    
+    // VIEW
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -50,7 +52,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
 
-        // Do any additional setup after loading the view.
         // Show Annotation Pin on the map
         if let annotation = annotationSelected {
             let span = MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
@@ -58,7 +59,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             self.mapView.setRegion(region, animated:true)
             self.mapView.addAnnotation(annotation)
         }
-
+        
+        // Show Stored Image
         let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
         let predicate = NSPredicate(format: "pindata == %@", pinData)
         fetchRequest.predicate = predicate
@@ -66,22 +68,26 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             for item in result {
                 downloadedImage.append(item.photoURL!)
             }
-            print("detect")
-            print(result.count)
         }
         
+        // Prepare Download Service
+        downloadService.downloadSession = downloadSession
+        // If no Stored Image, Start Download
         if downloadedImage.count == 0 {
-            // Start Download
-            downloadService.downloadSession = downloadSession
-            FlickrClient.getPhotolist() { flickrImages, error in
-                for item in flickrImages {
-                    self.downloadService.downloadFlickr(item)
-                }
-            }
+            getNewCollection()
         }
-        
-        DispatchQueue.main.async {
-            self.photoAlbumCollectionView.reloadData()
+    }
+    
+    
+    func getNewCollection() {
+        FlickrClient.getPhotolist() { flickrImages, error in
+            // When get the download list, Reflect to CollectionView
+            DispatchQueue.main.async {
+                self.photoAlbumCollectionView.reloadData()
+            }
+            for item in flickrImages {
+                self.downloadService.downloadFlickr(flickrImage: item)
+            }
         }
     }
     

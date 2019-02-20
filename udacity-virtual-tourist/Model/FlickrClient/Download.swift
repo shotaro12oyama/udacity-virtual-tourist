@@ -7,11 +7,13 @@
 //
 
 import Foundation
+import UIKit
 
 class Download {
     
     // Download service sets these values:
     var flickrImage: FlickrImage
+    var imageURL: URL
     init (flickrImage: FlickrImage) {
         self.flickrImage = flickrImage
         self.imageURL = flickrImage.imageURL
@@ -19,26 +21,40 @@ class Download {
     
     var task: URLSessionDownloadTask?
     var isDownloading = false
-    var resumeData: Data?
-    var imageURL: URL?
-    
-    // Download delegate sets this value:
+    var downloadedImage: UIImage?
+    var downloadedURL: URL?
     var progress: Float = 0
 
 }
+
 
 class DownloadService {
     
     // ViewController creates downloadsSession
     var downloadSession: URLSession!
-    var activeDownloads: [URL: Download] = [:]
+    var downloads: [URL: Download] = [:]
+    var downloadIndex:[URL] = []
     
-    func downloadFlickr (_ flickrImage: FlickrImage) {
-        let download = Download(flickrImage: flickrImage)
-        download.task = downloadSession.downloadTask(with: flickrImage.imageURL)
-        download.task!.resume()
-        download.isDownloading = true
-        activeDownloads[download.imageURL!] = download
+    
+    func downloadFlickr (flickrImage: FlickrImage) {
+        if downloads[flickrImage.imageURL] == nil {
+            let download = Download(flickrImage: flickrImage)
+            download.task = downloadSession.downloadTask(with: flickrImage.imageURL)
+            download.task!.resume()
+            download.isDownloading = true
+            downloads[download.imageURL] = download
+            downloadIndex.append(flickrImage.imageURL)
+        }
     }
     
+    func getDownloadSessionStatus(index: Int) -> Download {
+        let downloadURL = downloadIndex[index]
+        let task = downloads[downloadURL]
+        return task!
+    }
+    
+    func getDownloadIndex(url: URL) -> Int {
+        let index = downloadIndex.index(of: url)
+        return index ?? 0
+    }
 }

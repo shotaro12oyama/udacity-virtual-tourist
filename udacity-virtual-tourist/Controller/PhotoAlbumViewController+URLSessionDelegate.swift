@@ -9,20 +9,21 @@
 import Foundation
 import UIKit
 
-extension PhotoAlbumViewController: URLSessionDownloadDelegate {
+extension PhotoAlbumViewController: URLSessionTaskDelegate {
     
 
     // Stores downloaded file
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-        guard let sourceURL = downloadTask.originalRequest?.url else { return }
-        //downloadService.activeDownloads[sourceURL] = nil
-        let destinationURL = localFilePath(for: sourceURL)
         
+        // Store Downloaded Image
+        guard let sourceURL = downloadTask.originalRequest?.url else { return }
+        let destinationURL = localFilePath(for: sourceURL)
+        // Store URL into Core Data
         let flickrPhoto = FlickrPhoto(context: dataController.viewContext)
         flickrPhoto.photoURL = destinationURL
         flickrPhoto.pindata = pinData
         try? dataController.viewContext.save()
-                
+        // Store Image into Library
         let fileManager = FileManager.default
         try? fileManager.removeItem(at: destinationURL)
         do {
@@ -31,22 +32,44 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
             print("Could not copy file to disk: \(error.localizedDescription)")
         }
         print("downloadLocation:", location)
+        print("storedLocation:", destinationURL)
+        
+        // Change Download Status
+        // Get Cell/Download Index
+        let url = downloadTask.originalRequest?.url
+        let downloadIndex = downloadService.getDownloadIndex(url: url!)
+        
+        // Set Download Status
+        let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
+        download.isDownloading = false
+        let data = try? Data(contentsOf: destinationURL)
+        download.downloadedURL = sourceURL
+        download.downloadedImage = UIImage(data: data!)
+        
+        DispatchQueue.main.async {
+            self.photoAlbumCollectionView.reloadData()
+        }
+        
     }
     
 
     // Updates progress info
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didWriteData bytesWritten: Int64, totalBytesWritten: Int64, totalBytesExpectedToWrite: Int64) {
         
-        guard let url = downloadTask.originalRequest?.url,
-            let download = downloadService.activeDownloads[url]  else { return }
-
-        download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        // Get Cell/Download Index
+        let url = downloadTask.originalRequest?.url
+        let downloadIndex = downloadService.getDownloadIndex(url: url!)
         
-        if totalBytesWritten == totalBytesExpectedToWrite {
-            download.isDownloading = false
-            download.flickrImage.downloaded = true
+        // Set Download Status
+        let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
+        download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        download.isDownloading = true
+        
+        // Refresh ProgressBar in View
+        DispatchQueue.main.async {
+            print("test")
+            self.photoAlbumCollectionView.reloadData()
         }
-
     }
     
     // Standard background session handler
