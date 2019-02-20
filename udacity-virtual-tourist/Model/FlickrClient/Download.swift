@@ -59,8 +59,8 @@ class DownloadService {
         return task!
     }
     
-    func getDownloadIndex(url: URL) -> Int {
-        let index = downloadIndex.index(of: url)
-        return index ?? 0
+    func removeDownload() {
+        downloads.removeAll()
+        downloadIndex.removeAll()
     }
 }

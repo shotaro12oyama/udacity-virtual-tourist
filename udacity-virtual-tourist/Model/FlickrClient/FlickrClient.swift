@@ -71,6 +71,10 @@ class FlickrClient {
         }
     }
     
+    class func removePhotoList() {
+        flickrImages.removeAll()
+    }
+    
 
     
 }

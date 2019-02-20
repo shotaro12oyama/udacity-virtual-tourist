@@ -37,10 +37,9 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         // Change Download Status
         // Get Cell/Download Index
         let url = downloadTask.originalRequest?.url
-        //let downloadIndex = downloadService.getDownloadIndex(url: url!)
         
         // Set Download Status
-        let download = downloadService.getDownloadSessionStatus(url: url!) //downloadService.getDownloadSessionStatus(index: downloadIndex)
+        let download = downloadService.getDownloadSessionStatus(url: url!)
         download.isDownloading = false
         let data = try? Data(contentsOf: destinationURL)
         download.downloadedURL = sourceURL
@@ -58,10 +57,8 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         
         // Get Cell/Download Index
         let url = downloadTask.originalRequest?.url
-        //let downloadIndex = downloadService.getDownloadIndex(url: url!)
         
         // Set Download Status
-        //let download = downloadService.getDownloadSessionStatus(index: downloadIndex)
         let download = downloadService.getDownloadSessionStatus(url: url!)
         download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
         download.isDownloading = true

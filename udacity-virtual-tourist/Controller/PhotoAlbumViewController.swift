@@ -79,14 +79,28 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     }
     
     
+    
     func getNewCollection() {
+        FlickrClient.removePhotoList()
+        downloadService.removeDownload()
+        
+        let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
+        let predicate = NSPredicate(format: "pindata == %@", pinData)
+        fetchRequest.predicate = predicate
+        if let result = try? dataController.viewContext.fetch(fetchRequest) {
+            for item in result {
+                dataController.viewContext.delete(item)
+                try? dataController.viewContext.save()
+            }
+        }
+        
         FlickrClient.getPhotolist() { flickrImages, error in
             // When get the download list, Reflect to CollectionView
-            DispatchQueue.main.async {
-                self.photoAlbumCollectionView.reloadData()
-            }
             for item in flickrImages {
                 self.downloadService.downloadFlickr(flickrImage: item)
+            }
+            DispatchQueue.main.async {
+                self.photoAlbumCollectionView.reloadData()
             }
         }
     }
