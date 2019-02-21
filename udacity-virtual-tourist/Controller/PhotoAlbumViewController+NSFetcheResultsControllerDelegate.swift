@@ -11,19 +11,19 @@ import CoreData
 
 extension PhotoAlbumViewController:  NSFetchedResultsControllerDelegate {
     
-    func setupFetchedResultsController() {
+    func getStoredPhoto(url: URL, completion: @escaping (FlickrPhoto?, Error?) -> Void) {
         let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
-        let predicate = NSPredicate(format: "pinData == %@", pinData)
+        let predicate1 = NSPredicate(format: "pindata == %@", pinData)
+        let predicate2 = NSPredicate(format: "photoURL == %@", url as CVarArg)
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [predicate1, predicate2])
         fetchRequest.predicate = predicate
-        //let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: false)
-        fetchRequest.sortDescriptors = nil
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController.delegate = self
-        
         do {
-            try fetchedResultsController.performFetch()
+            let result = try dataController.viewContext.fetch(fetchRequest)
+            completion(result.first, nil)
         } catch {
-            fatalError("The fetch could not be performed: \(error.localizedDescription)")
+            completion(nil, error)
         }
+        
     }
+    
 }

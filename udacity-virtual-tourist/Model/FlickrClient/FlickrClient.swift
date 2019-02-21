@@ -21,7 +21,7 @@ class FlickrClient {
         
         var stringValue: String {
             switch self {
-            case .getPhotolist: return Endpoints.base + Endpoints.apiKeyParam + "&format=json&nojsoncallback=1&per_page=15"
+            case .getPhotolist: return Endpoints.base + Endpoints.apiKeyParam + "&format=json&nojsoncallback=1&per_page=15&page=\(Int.random(in: 1...10))"
             }
         }
         var url: URL {

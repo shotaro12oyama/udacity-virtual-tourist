@@ -25,8 +25,14 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             cell.progressBar.isHidden = false
             cell.progressBar.setProgress(download.progress, animated: true)
         } else {
-            cell.photoImageView.image = download.downloadedImage
-            cell.progressBar.isHidden = true
+            getStoredPhoto(url: download.imageURL) {photodata, error in
+                if error != nil {
+                    print(error!)
+                } else {
+                    cell.progressBar.isHidden = true
+                    cell.photoImageView.image = UIImage(data: photodata!.imageData!)
+                }
+            }
         }
         return cell
     }
@@ -44,6 +50,24 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         return FlickrClient.flickrImages.count;
     }
     
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        let cell =
+            collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
+        
+        enum EditStatus {
+            case selected
+            case notSelected
+        }
+        
+        newCollectionButton.isHidden = true
+        
+        
+ 
+        
+        
+    }
     
     @IBAction func newCollectionButton (_ sender: Any) {
         getNewCollection()

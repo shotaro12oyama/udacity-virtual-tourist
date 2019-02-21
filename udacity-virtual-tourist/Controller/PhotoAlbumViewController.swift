@@ -26,22 +26,14 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     // Prepare Download
     let downloadService = DownloadService()
     lazy var downloadSession: URLSession = {
-        //    let configuration = URLSessionConfiguration.default
-        let configuration = URLSessionConfiguration.background(withIdentifier: "bgSessionConfiguration")
+        let configuration = URLSessionConfiguration.default
         return URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
     }()
-    
-    // Prepare File Save
-    let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    func localFilePath(for url: URL) -> URL {
-        return documentsPath.appendingPathComponent(url.lastPathComponent)
-    }
     
     // Prepare Core Data
     var fetchedResultsController:NSFetchedResultsController<FlickrPhoto>!
     
-    
-    // VIEW
+    // View
     override func viewDidLoad() {
         super.viewDidLoad()
     
@@ -61,19 +53,12 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         }
         
         // Show Stored Image
-        let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
-        let predicate = NSPredicate(format: "pindata == %@", pinData)
-        fetchRequest.predicate = predicate
-        if let result = try? dataController.viewContext.fetch(fetchRequest) {
-            for item in result {
-                downloadedImage.append(item.photoURL!)
-            }
-        }
+        //let storedFlickrPhotoURLList = setupFetchRequest()
         
         // Prepare Download Service
         downloadService.downloadSession = downloadSession
         // If no Stored Image, Start Download
-        if downloadedImage.count == 0 {
+        if Fetch.photoImages.count == 0 {
             getNewCollection()
         }
     }
@@ -81,8 +66,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     
     func getNewCollection() {
-        FlickrClient.removePhotoList()
-        downloadService.removeDownload()
         
         let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
         let predicate = NSPredicate(format: "pindata == %@", pinData)
@@ -90,33 +73,28 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         if let result = try? dataController.viewContext.fetch(fetchRequest) {
             for item in result {
                 dataController.viewContext.delete(item)
-                try? dataController.viewContext.save()
             }
+            try? dataController.viewContext.save()
         }
+        
+        FlickrClient.removePhotoList()
+        downloadService.removeDownload()
         
         FlickrClient.getPhotolist() { flickrImages, error in
             // When get the download list, Reflect to CollectionView
-            for item in flickrImages {
-                self.downloadService.downloadFlickr(flickrImage: item)
-            }
-            DispatchQueue.main.async {
-                self.photoAlbumCollectionView.reloadData()
+            if error != nil {
+                print(error!)
+                
+            } else {
+                
+                for item in flickrImages {
+                    self.downloadService.downloadFlickr(flickrImage: item)
+                }
+                DispatchQueue.main.async {
+                    self.photoAlbumCollectionView.reloadData()
+                }
             }
         }
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        //setupFetchedResultsController()
-        DispatchQueue.main.async {
-            self.photoAlbumCollectionView.reloadData()
-        }
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        //fetchedResultsController = nil
     }
     
     
@@ -139,6 +117,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         
         return pinView
     }
+    
+    
 }
 
 

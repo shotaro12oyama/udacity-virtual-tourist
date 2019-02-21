@@ -34,8 +34,6 @@ class DownloadService {
     // ViewController creates downloadsSession
     var downloadSession: URLSession!
     var downloads: [URL: Download] = [:]
-    var downloadIndex:[URL] = []
-    
     
     func downloadFlickr (flickrImage: FlickrImage) {
         if downloads[flickrImage.imageURL] == nil {
@@ -43,24 +41,21 @@ class DownloadService {
             download.task = downloadSession.downloadTask(with: flickrImage.imageURL)
             download.task!.resume()
             download.isDownloading = true
-            downloads[download.imageURL] = download
-            downloadIndex.append(flickrImage.imageURL)
+            downloads[flickrImage.imageURL] = download
         }
     }
     
     func getDownloadSessionStatus(index: Int) -> Download {
-        let downloadURL = downloadIndex[index]
-        let task = downloads[downloadURL]
+        let task = downloads[FlickrClient.flickrImages[index].imageURL]
         return task!
     }
     
-    func getDownloadSessionStatus(url: URL) -> Download {
+    func getDownloadSessionStatus(url: URL) -> Download? {
         let task = downloads[url]
-        return task!
+        return task
     }
     
     func removeDownload() {
         downloads.removeAll()
-        downloadIndex.removeAll()
     }
 }

@@ -39,7 +39,7 @@
                                 <gestureRecognizers/>
                                 <connections>
                                     <outlet property="delegate" destination="7F4-Gk-abb" id="fMG-0g-YEs"/>
-                                    <outletCollection property="gestureRecognizers" destination="AEx-7w-FAM" appends="YES" id="toa-FT-d8p"/>
+                                    <outletCollection property="gestureRecognizers" destination="YOX-Me-gy7" appends="YES" id="url-ZT-CW2"/>
                                 </connections>
                             </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap Pins to Delete" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mH9-f5-PaH">
@@ -73,11 +73,11 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tkc-Wm-JEF" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tapGestureRecognizer id="AEx-7w-FAM">
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="YOX-Me-gy7">
                     <connections>
-                        <action selector="mapViewDidTap:" destination="7F4-Gk-abb" id="XDP-Jw-XsZ"/>
+                        <action selector="mapViewDidTap:" destination="7F4-Gk-abb" id="D2J-Ay-1y3"/>
                     </connections>
-                </tapGestureRecognizer>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1124" y="312.59370314842579"/>
         </scene>

@@ -119,7 +119,7 @@ class InitialMapViewController: UIViewController,  MKMapViewDelegate {
  
     
     @IBAction func mapViewDidTap(_ sender: Any) {
-        if (sender as AnyObject).state == UIGestureRecognizer.State.ended {
+        if (sender as AnyObject).state == UIGestureRecognizer.State.began {
             if editState {
                 let tapPoint = (sender as AnyObject).location(in: mapView)
                 let center = mapView.convert(tapPoint, toCoordinateFrom: mapView)

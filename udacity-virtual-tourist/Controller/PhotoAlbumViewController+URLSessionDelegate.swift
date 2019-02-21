@@ -16,37 +16,26 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
     func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
         
         // Store Downloaded Image
-        guard let sourceURL = downloadTask.originalRequest?.url else { return }
-        let destinationURL = localFilePath(for: sourceURL)
+        guard let url = downloadTask.originalRequest?.url else { return }
+       
         // Store URL into Core Data
-        let flickrPhoto = FlickrPhoto(context: dataController.viewContext)
-        flickrPhoto.photoURL = destinationURL
-        flickrPhoto.pindata = pinData
-        try? dataController.viewContext.save()
-        // Store Image into Library
-        let fileManager = FileManager.default
-        try? fileManager.removeItem(at: destinationURL)
-        do {
-            try fileManager.copyItem(at: location, to: destinationURL)
-        } catch let error {
-            print("Could not copy file to disk: \(error.localizedDescription)")
+        if let data = try? Data(contentsOf: location) {
+            let flickrPhoto = FlickrPhoto(context: dataController.viewContext)
+            flickrPhoto.photoURL = url
+            flickrPhoto.pindata = pinData
+            flickrPhoto.imageData = data
         }
-        print("downloadLocation:", location)
-        print("storedLocation:", destinationURL)
+        try? dataController.viewContext.save()
         
         // Change Download Status
         // Get Cell/Download Index
-        let url = downloadTask.originalRequest?.url
         
         // Set Download Status
-        let download = downloadService.getDownloadSessionStatus(url: url!)
-        download.isDownloading = false
-        let data = try? Data(contentsOf: destinationURL)
-        download.downloadedURL = sourceURL
-        download.downloadedImage = UIImage(data: data!)
-        
-        DispatchQueue.main.async {
-            self.photoAlbumCollectionView.reloadData()
+        if let download = downloadService.getDownloadSessionStatus(url: url) {
+            download.isDownloading = false
+            DispatchQueue.main.async {
+                self.photoAlbumCollectionView.reloadData()
+            }
         }
         
     }
@@ -59,15 +48,15 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         let url = downloadTask.originalRequest?.url
         
         // Set Download Status
-        let download = downloadService.getDownloadSessionStatus(url: url!)
-        download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
-        download.isDownloading = true
-        
-        // Refresh ProgressBar in View
-        DispatchQueue.main.async {
-            self.photoAlbumCollectionView.reloadData()
+        if let download = downloadService.getDownloadSessionStatus(url: url!) {
+            download.progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+            download.isDownloading = true
+            
+            // Refresh ProgressBar in View
+            DispatchQueue.main.async {
+                self.photoAlbumCollectionView.reloadData()
+            }
         }
-        print("test")
     }
     
     // Standard background session handler
