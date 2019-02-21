@@ -138,7 +138,7 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y5i-La-8rk">
                                 <rect key="frame" x="0.0" y="617" width="375" height="50"/>
-                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="backgroundColor" white="0.84473586309523807" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="mun-aV-PVl"/>
                                 </constraints>
@@ -150,6 +150,18 @@
                                     <action selector="newCollectionButton:" destination="MdK-T6-y6b" eventType="touchUpInside" id="eGE-lQ-xxu"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xt8-3H-3Ae">
+                                <rect key="frame" x="0.0" y="617" width="375" height="50"/>
+                                <color key="backgroundColor" white="0.84369419642857146" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="Bt7-cR-anw"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                <state key="normal" title="Remove Selected Pictures"/>
+                                <connections>
+                                    <action selector="removeSelectedPictures:" destination="MdK-T6-y6b" eventType="touchUpInside" id="iI5-cs-kBH"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -157,9 +169,12 @@
                             <constraint firstItem="Y5i-La-8rk" firstAttribute="bottom" secondItem="0RW-56-o6S" secondAttribute="bottom" id="23y-Y9-bDR"/>
                             <constraint firstItem="Y5i-La-8rk" firstAttribute="leading" secondItem="0RW-56-o6S" secondAttribute="leading" id="3Xa-pF-zHb"/>
                             <constraint firstItem="BWz-dv-fKO" firstAttribute="leading" secondItem="0RW-56-o6S" secondAttribute="leading" id="GrB-uV-6lR"/>
+                            <constraint firstItem="Xt8-3H-3Ae" firstAttribute="trailing" secondItem="0RW-56-o6S" secondAttribute="trailing" id="IgE-VJ-8qS"/>
+                            <constraint firstItem="Xt8-3H-3Ae" firstAttribute="bottom" secondItem="0RW-56-o6S" secondAttribute="bottom" id="MLd-O4-KT7"/>
                             <constraint firstItem="BWz-dv-fKO" firstAttribute="trailing" secondItem="0RW-56-o6S" secondAttribute="trailing" id="Mtq-ex-Jww"/>
                             <constraint firstItem="tSs-Je-fuj" firstAttribute="trailing" secondItem="0RW-56-o6S" secondAttribute="trailing" id="NhQ-0b-XKW"/>
                             <constraint firstItem="BWz-dv-fKO" firstAttribute="top" secondItem="tSs-Je-fuj" secondAttribute="bottom" id="O0Y-k1-A4n"/>
+                            <constraint firstItem="Xt8-3H-3Ae" firstAttribute="leading" secondItem="0RW-56-o6S" secondAttribute="leading" id="RN8-fO-jQm"/>
                             <constraint firstItem="0RW-56-o6S" firstAttribute="bottom" secondItem="BWz-dv-fKO" secondAttribute="bottom" constant="50" id="bVK-uy-UUW"/>
                             <constraint firstItem="tSs-Je-fuj" firstAttribute="leading" secondItem="0RW-56-o6S" secondAttribute="leading" id="kes-Um-UvN"/>
                             <constraint firstItem="tSs-Je-fuj" firstAttribute="top" secondItem="0RW-56-o6S" secondAttribute="top" id="mW5-3m-0Cu"/>
@@ -171,6 +186,7 @@
                         <outlet property="mapView" destination="tSs-Je-fuj" id="JlT-mO-Zs4"/>
                         <outlet property="newCollectionButton" destination="Y5i-La-8rk" id="PFe-q8-tYl"/>
                         <outlet property="photoAlbumCollectionView" destination="BWz-dv-fKO" id="UDG-Uy-eye"/>
+                        <outlet property="removeSelectedPicturesButton" destination="Xt8-3H-3Ae" id="dks-zF-X6w"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b2O-ZU-kQn" userLabel="First Responder" sceneMemberID="firstResponder"/>

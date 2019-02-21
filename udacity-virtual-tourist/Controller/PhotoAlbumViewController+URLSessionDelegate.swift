@@ -27,9 +27,6 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
         }
         try? dataController.viewContext.save()
         
-        // Change Download Status
-        // Get Cell/Download Index
-        
         // Set Download Status
         if let download = downloadService.getDownloadSessionStatus(url: url) {
             download.isDownloading = false

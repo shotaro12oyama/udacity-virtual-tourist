@@ -15,6 +15,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     @IBOutlet weak var newCollectionButton: UIButton!
+    @IBOutlet var removeSelectedPicturesButton: UIButton!
     @IBOutlet weak var photoAlbumCollectionView: UICollectionView!
     @IBOutlet weak var mapView: MKMapView!
     
@@ -61,6 +62,10 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         if Fetch.photoImages.count == 0 {
             getNewCollection()
         }
+        
+        removeSelectedPicturesButton.isHidden = true
+        removeSelectedPicturesButton.isEnabled = false
+        
     }
     
     
@@ -117,7 +122,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         
         return pinView
     }
-    
+
     
 }
 

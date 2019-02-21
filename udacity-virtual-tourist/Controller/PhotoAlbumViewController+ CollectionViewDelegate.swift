@@ -31,6 +31,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
                 } else {
                     cell.progressBar.isHidden = true
                     cell.photoImageView.image = UIImage(data: photodata!.imageData!)
+                    cell.photoImageView.backgroundColor = .white
                 }
             }
         }
@@ -51,27 +52,68 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     
+
+    
+    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.alpha = 0.2
+        print("shouldhighlight")
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        print("shouldSelect")
+        let cell = collectionView.cellForItem(at: indexPath)
+        let state = cell?.isSelected ?? false
+        print(state)
+        return state
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell =
-            collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
-        
-        enum EditStatus {
-            case selected
-            case notSelected
-        }
-        
         newCollectionButton.isHidden = true
+        newCollectionButton.isEnabled = false
         
+        removeSelectedPicturesButton.isHidden = false
+        removeSelectedPicturesButton.isEnabled = true
         
- 
-        
+        print("didselect")
+        let cell = collectionView.cellForItem(at: indexPath)
+        let state = cell?.isSelected ?? false
+        print("dide", state)
+        cell?.isSelected = false
         
     }
     
-    @IBAction func newCollectionButton (_ sender: Any) {
-        getNewCollection()
+    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
+        print("didhighlight")
     }
+  
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        print("deselect")
+        return false
+    }
+    
+    
+    @IBAction func newCollectionButton (_ sender: Any) {
+        
+        getNewCollection()
+        
+    }
+    
+    
+    
+    @IBAction func removeSelectedPictures(_ sender: Any ) {
+        
+        removeSelectedPicturesButton.isHidden = true
+        removeSelectedPicturesButton.isEnabled = false
+
+        newCollectionButton.isHidden = false
+        newCollectionButton.isEnabled = true
+
+    }
+    
     
     
 }
+

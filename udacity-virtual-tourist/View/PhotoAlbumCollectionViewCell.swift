@@ -12,11 +12,6 @@ class PhotoAlbumCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var photoImageView: UIImageView!
     @IBOutlet var progressBar: UIProgressView!
-    
 
-    
-    func updateDisplay(progress: Float, totalSize : String) {
-        progressBar.progress = progress
-    }
 
 }
