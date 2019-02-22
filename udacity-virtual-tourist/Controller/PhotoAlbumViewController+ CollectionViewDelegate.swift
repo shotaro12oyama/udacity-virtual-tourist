@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
@@ -25,15 +25,8 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
             cell.progressBar.isHidden = false
             cell.progressBar.setProgress(download.progress, animated: true)
         } else {
-            getStoredPhoto(url: download.imageURL) {photodata, error in
-                if error != nil {
-                    print(error!)
-                } else {
-                    cell.progressBar.isHidden = true
-                    cell.photoImageView.image = UIImage(data: photodata!.imageData!)
-                    cell.photoImageView.backgroundColor = .white
-                }
-            }
+            cell.progressBar.isHidden = true
+            cell.photoImageView.image = album[indexPath.item]
         }
         return cell
     }
@@ -52,46 +45,24 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     }
     
     
-
-    
-    func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        let cell = collectionView.cellForItem(at: indexPath)
-        cell?.alpha = 0.2
-        print("shouldhighlight")
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        print("shouldSelect")
-        let cell = collectionView.cellForItem(at: indexPath)
-        let state = cell?.isSelected ?? false
-        print(state)
-        return state
-    }
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.alpha = 0.2
         
         newCollectionButton.isHidden = true
         newCollectionButton.isEnabled = false
         
         removeSelectedPicturesButton.isHidden = false
         removeSelectedPicturesButton.isEnabled = true
-        
-        print("didselect")
-        let cell = collectionView.cellForItem(at: indexPath)
-        let state = cell?.isSelected ?? false
-        print("dide", state)
-        cell?.isSelected = false
-        
     }
     
-    func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        print("didhighlight")
-    }
-  
-    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
-        print("deselect")
-        return false
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath)
+        cell?.alpha = 1.0
     }
     
     
@@ -110,6 +81,16 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
 
         newCollectionButton.isHidden = false
         newCollectionButton.isEnabled = true
+                
+        if let items = photoAlbumCollectionView.indexPathsForSelectedItems {
+            for selectedCell in items {
+                let download = downloadService.getDownloadSessionStatus(index: selectedCell.item)
+                deleteStoredPhoto(url: download.imageURL)
+                photoAlbumCollectionView.remove cellForItem(at: selectedCell)
+                
+            }
+            
+        }
 
     }
     

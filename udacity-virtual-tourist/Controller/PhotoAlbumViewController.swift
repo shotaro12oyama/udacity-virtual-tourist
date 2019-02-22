@@ -23,6 +23,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var dataController:DataController!
     var pinData: PinData!
     var downloadedImage: [URL] = []
+    var album: [UIImage] = []
     
     // Prepare Download
     let downloadService = DownloadService()
@@ -44,7 +45,8 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
         flowLayout.minimumInteritemSpacing = space
         flowLayout.minimumLineSpacing = space
         flowLayout.itemSize = CGSize(width: dimension, height: dimension)
-
+        photoAlbumCollectionView.allowsMultipleSelection = true
+        
         // Show Annotation Pin on the map
         if let annotation = annotationSelected {
             let span = MKCoordinateSpan(latitudeDelta: 1.0, longitudeDelta: 1.0)
@@ -72,6 +74,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     func getNewCollection() {
         
+        album = []
         let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
         let predicate = NSPredicate(format: "pindata == %@", pinData)
         fetchRequest.predicate = predicate

@@ -20,10 +20,7 @@ class Download {
     }
     
     var task: URLSessionDownloadTask?
-    var sharedTask: URLSessionDataTask?
     var isDownloading = false
-    var downloadedImage: UIImage?
-    var downloadedURL: URL?
     var progress: Float = 0
 
 }
