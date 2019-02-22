@@ -23,7 +23,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     var dataController:DataController!
     var pinData: PinData!
     var downloadedImage: [URL] = []
-    var album: [UIImage] = []
+
     
     // Prepare Download
     let downloadService = DownloadService()
@@ -55,14 +55,23 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             self.mapView.addAnnotation(annotation)
         }
         
-        // Show Stored Image
-        //let storedFlickrPhotoURLList = setupFetchRequest()
-        
+        print("fetch_count: ", Fetch.album.count)
         // Prepare Download Service
         downloadService.downloadSession = downloadSession
-        // If no Stored Image, Start Download
-        if Fetch.photoImages.count == 0 {
-            getNewCollection()
+        
+        if Fetch.album.count == 0 {
+            let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
+            let predicate = NSPredicate(format: "pindata == %@", pinData)
+            fetchRequest.predicate = predicate
+            if let result = try? dataController.viewContext.fetch(fetchRequest) {
+                for item in result {
+                    Fetch.album.append(item)
+                }
+            }
+            // If no Stored Image, Start Download
+            if Fetch.album.count == 0 {
+                getNewCollection()
+            }
         }
         
         removeSelectedPicturesButton.isHidden = true
@@ -74,7 +83,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
     
     func getNewCollection() {
         
-        album = []
+        Fetch.album = []
         let fetchRequest:NSFetchRequest<FlickrPhoto> = FlickrPhoto.fetchRequest()
         let predicate = NSPredicate(format: "pindata == %@", pinData)
         fetchRequest.predicate = predicate
@@ -92,9 +101,7 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             // When get the download list, Reflect to CollectionView
             if error != nil {
                 print(error!)
-                
             } else {
-                
                 for item in flickrImages {
                     self.downloadService.downloadFlickr(flickrImage: item)
                 }

@@ -24,6 +24,7 @@ extension PhotoAlbumViewController: URLSessionDownloadDelegate {
             flickrPhoto.photoURL = url
             flickrPhoto.pindata = pinData
             flickrPhoto.imageData = data
+            Fetch.album.append(flickrPhoto)
         }
         try? dataController.viewContext.save()
         

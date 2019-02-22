@@ -8,40 +8,16 @@
 
 import Foundation
 import UIKit
-import CoreData
 
 class Fetch {
-    static var photoImages: [Int: UIImage] = [:]
+    static var album: [FlickrPhoto] = []
     
-    
-    
-    class func setFetchImages(urls: [URL], completion: @escaping (Bool, Error?) -> Void) {
-        for (index, url) in urls.enumerated() {
-            let data = try? Data(contentsOf: url)
-            photoImages.updateValue(UIImage(data: data!)!, forKey: index)
-        }
+    func addAlbum(_ photo: FlickrPhoto) {
+        Fetch.album.append(photo)
     }
     
-    class func addFetchImage(index: Int, url: URL) {
-        let data = try? Data(contentsOf: url)
-        photoImages.updateValue(UIImage(data: data!)!, forKey: index)
-    }
-    
-    class func getFetchAllImages() -> [UIImage] {
-        var imageArray: [UIImage] = []
-        for item in photoImages.values {
-            imageArray.append(item)
-        }
-        return imageArray
-    }
-    
-    class func getFetchImage(index: Int) -> UIImage? {
-        return photoImages[index]
-    }
-    
-    
-    class func deleteFetchImages() {
-        photoImages.removeAll()
+    func removeAlbum() {
+        Fetch.album.removeAll()
     }
     
 }

@@ -42,9 +42,10 @@ class DownloadService {
         }
     }
     
-    func getDownloadSessionStatus(index: Int) -> Download {
+    func getDownloadSessionStatus(index: Int) -> Download? {
+        let url = FlickrClient.flickrImages[index].imageURL
         let task = downloads[FlickrClient.flickrImages[index].imageURL]
-        return task!
+        return task
     }
     
     func getDownloadSessionStatus(url: URL) -> Download? {

@@ -17,17 +17,31 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         let cell =
             collectionView.dequeueReusableCell(withReuseIdentifier: "PhotoAlbumCollectionViewCell", for: indexPath) as! PhotoAlbumCollectionViewCell
         
-        // Receive Download Status
-        let download = downloadService.getDownloadSessionStatus(index: indexPath.item)
-        
-        // Show the progrss status
-        if download.isDownloading {
-            cell.progressBar.isHidden = false
-            cell.progressBar.setProgress(download.progress, animated: true)
-        } else {
-            cell.progressBar.isHidden = true
-            cell.photoImageView.image = album[indexPath.item]
+        cell.progressBar.isHidden = true
+        if let storedImage = Fetch.album[indexPath.item].imageData {
+            cell.photoImageView.image = UIImage(data: storedImage)
         }
+        
+        // Receive Download Status
+        if let download = downloadService.getDownloadSessionStatus(index: indexPath.item) {
+        
+            // Show the progrss status
+            if download.isDownloading {
+                cell.progressBar.isHidden = false
+                cell.progressBar.setProgress(download.progress, animated: true)
+            } else {
+                getStoredPhoto(url: download.imageURL) {photodata, error in
+                    if error != nil {
+                        print(error!)
+                    } else {
+                        cell.progressBar.isHidden = true
+                        cell.photoImageView.image = UIImage(data: Fetch.album[indexPath.item].imageData!)
+                    }
+                }
+            }
+        }
+        
+        
         return cell
     }
     
@@ -41,7 +55,7 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return FlickrClient.flickrImages.count;
+        return Fetch.album.count;
     }
     
     
@@ -85,9 +99,11 @@ extension PhotoAlbumViewController: UICollectionViewDataSource, UICollectionView
         if let items = photoAlbumCollectionView.indexPathsForSelectedItems {
             for selectedCell in items {
                 let download = downloadService.getDownloadSessionStatus(index: selectedCell.item)
-                deleteStoredPhoto(url: download.imageURL)
-                photoAlbumCollectionView.remove cellForItem(at: selectedCell)
-                
+                deleteStoredPhoto(url: download!.imageURL)
+                Fetch.album.remove(at: selectedCell.item)
+                DispatchQueue.main.async {
+                    self.photoAlbumCollectionView.reloadData()
+                }
             }
             
         }
