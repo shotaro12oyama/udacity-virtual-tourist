@@ -55,7 +55,6 @@ class PhotoAlbumViewController: UIViewController, MKMapViewDelegate {
             self.mapView.addAnnotation(annotation)
         }
         
-        print("fetch_count: ", Fetch.album.count)
         // Prepare Download Service
         downloadService.downloadSession = downloadSession
         
