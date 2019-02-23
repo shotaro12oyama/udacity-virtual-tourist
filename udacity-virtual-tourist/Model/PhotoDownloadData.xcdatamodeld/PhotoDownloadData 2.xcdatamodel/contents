@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G3025" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FlickrPhoto" representedClassName="FlickrPhoto" syncable="YES" codeGenerationType="class">
-        <attribute name="imageData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="imageData" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES" syncable="YES"/>
         <attribute name="photoURL" optional="YES" attributeType="URI" syncable="YES"/>
         <relationship name="pindata" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PinData" inverseName="flickrphotos" inverseEntity="PinData" syncable="YES"/>
     </entity>
@@ -12,7 +12,7 @@
         <relationship name="flickrphotos" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="FlickrPhoto" inverseName="pindata" inverseEntity="FlickrPhoto" syncable="YES"/>
     </entity>
     <elements>
-        <element name="FlickrPhoto" positionX="-63" positionY="-27" width="128" height="88"/>
+        <element name="FlickrPhoto" positionX="-63" positionY="-27" width="128" height="90"/>
         <element name="PinData" positionX="228.69140625" positionY="-95.2265625" width="128" height="105"/>
     </elements>
 </model>
